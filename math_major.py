@@ -81,10 +81,11 @@ with st.expander("General Education Classes"):
             com_tc = st.selectbox("Communication Transfer Credits", list(range(0, 76)))
         else:
             com_tc = st.selectbox("Communication Transfer Credits", list(range(0, 76)), index=int(uploaded_df["comm"][0]))
-        st.write(com111z_value)
+        
         com111z = st.checkbox("COM 111Z - Public Speaking", value = com111z_value) 
         spe321 = st.checkbox("SPE 321 - Small Group/Team Comm Credits", value = spe321_value)
         wri121z = st.checkbox("WRI 121Z - Composition I", value = wri121z_value) 
+
         # Find comm choice value
         if uploaded_df["comm"][4] == "":
             com_choice1_index = None
@@ -117,40 +118,62 @@ with st.expander("General Education Classes"):
         else:
             hum_tc = st.selectbox("Humanities Transfer Credits", list(range(0, 76)), index=int(uploaded_df["hum"][0]))
         # Separate Prefix and Course Number for each Humanities elective
+
+        # Class 1        
         st.write("Humanities Elective 1")
         hum_col1, hum_col2 = st.columns(2)
         with hum_col1:
-            hum_ele1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "hum_ele1_prefix")
-            df_hum1 = df[df['Prefix'] == hum_ele1_prefix]
-        with hum_col2:    
-            hum_ele1_cn = st.selectbox("Number", list(df_hum1["Code"]), key = "hum_ele1_cn")
-            
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["hum"][1] == ""):
+                hum1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "hum1_prefix")
+            else:
+                hum1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["hum"][1]))), placeholder = "Pick One", key = "hum1_prefix1")
+            df_hum1 = df[df['Prefix'] == hum1_prefix]
+        with hum_col2:  
+            if uploaded_file != None and hum1_prefix == uploaded_df["hum"][1]:  
+                hum1_cn = st.selectbox("Number", list(df_hum1["Code"]), key = "hum1_cn", index = int(list(df_hum1["Code"]).index(uploaded_df["hum"][2])))
+            else:
+                hum1_cn = st.selectbox("Number", list(df_hum1["Code"]), key = "hum1_cn1")
+        
+        # Class 2
         st.write("Humanities Elective 2")
         hum_col1, hum_col2 = st.columns(2)
         with hum_col1:
-            hum_ele2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "hum_ele2_prefix")
-            df_hum2 = df[df['Prefix'] == hum_ele2_prefix]
-        with hum_col2:    
-            hum_ele2_cn = st.selectbox("Number", list(df_hum2["Code"]), key = "hum_ele2_cn")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["hum"][3] == ""):
+                hum2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "hum2_prefix")
+            else:
+                hum2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["hum"][3]))), placeholder = "Pick One", key = "hum2_prefix1")
+            df_hum2 = df[df['Prefix'] == hum2_prefix]
+        with hum_col2:  
+            if uploaded_file != None and hum2_prefix == uploaded_df["hum"][3]:  
+                hum2_cn = st.selectbox("Number", list(df_hum2["Code"]), key = "hum2_cn", index = int(list(df_hum2["Code"]).index(uploaded_df["hum"][4])))
+            else:
+                hum2_cn = st.selectbox("Number", list(df_hum2["Code"]), key = "hum2_cn1")
         
+        # Class 3
         st.write("Humanities Elective 3")
         hum_col1, hum_col2 = st.columns(2)
         with hum_col1:
-            hum_ele3_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "hum_ele3_prefix")
-            df_hum3 = df[df['Prefix'] == hum_ele3_prefix]
-        with hum_col2:    
-            hum_ele3_cn = st.selectbox("Number", list(df_hum3["Code"]), key = "hum_ele3_cn")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["hum"][5] == ""):
+                hum3_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "hum3_prefix")
+            else:
+                hum3_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["hum"][5]))), placeholder = "Pick One", key = "hum3_prefix1")
+            df_hum3 = df[df['Prefix'] == hum3_prefix]
+        with hum_col2:  
+            if uploaded_file != None and hum3_prefix == uploaded_df["hum"][5]:  
+                hum3_cn = st.selectbox("Number", list(df_hum3["Code"]), key = "hum3_cn", index = int(list(df_hum3["Code"]).index(uploaded_df["hum"][6])))
+            else:
+                hum3_cn = st.selectbox("Number", list(df_hum3["Code"]), key = "hum3_cn1")
 
         # Find the credit hours for each elective 
-        hum1_credit = df_hum1[df_hum1["Code"] == hum_ele1_cn]["Credit Hours:"]
-        hum2_credit = df_hum2[df_hum2["Code"] == hum_ele2_cn]["Credit Hours:"]
-        hum3_credit = df_hum3[df_hum3["Code"] == hum_ele3_cn]["Credit Hours:"]
+        hum1_credit = df_hum1[df_hum1["Code"] == hum1_cn]["Credit Hours:"]
+        hum2_credit = df_hum2[df_hum2["Code"] == hum2_cn]["Credit Hours:"]
+        hum3_credit = df_hum3[df_hum3["Code"] == hum3_cn]["Credit Hours:"]
         # This is if nothing is chosen then the credits defaults to 0
-        if hum_ele1_prefix == None or hum_ele1_cn == None:
+        if hum1_prefix == None or hum1_cn == None:
             hum1_credit = 0
-        if hum_ele2_prefix == None or hum_ele2_cn == None:
+        if hum2_prefix == None or hum2_cn == None:
             hum2_credit = 0
-        if hum_ele3_prefix == None or hum_ele3_cn == None:
+        if hum3_prefix == None or hum3_cn == None:
             hum3_credit = 0
 
         hum_credits = hum_tc + int(hum1_credit) + int(hum2_credit) + int(hum3_credit)
@@ -649,7 +672,7 @@ with st.expander("Analysis and Download"):
 
     # Creating a data frame to download
     created_data = {"comm" : [com_tc, com111z, spe321, wri121z, com_choice1, com_choice2, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
-                    "hum" : [hum_tc, hum_ele1_prefix, hum_ele1_cn, hum_ele2_prefix, hum_ele2_cn, hum_ele2_prefix, hum_ele3_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                    "hum" : [hum_tc, hum1_prefix, hum1_cn, hum2_prefix, hum2_cn, hum3_prefix, hum3_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "ss" : [ss_tc, ss_ele1_prefix, ss_ele1_cn, ss_ele2_prefix, ss_ele2_cn, ss_ele3_prefix, ss_ele3_cn, ss_ele4_prefix, ss_ele4_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "phy" : [phy_tc, phy221, phy222, phy223, phy_ele1_prefix, phy_ele1_cn, phy_ele2_prefix, phy_ele2_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "math" : [math_tc, stat201, math251, math252, math253, math254, math310, math321, math322, math341, math346, math354, math421, math451, math_choice1, math_choice2, None, None, None, None, None, None, None, None, None],
