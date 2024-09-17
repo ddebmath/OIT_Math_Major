@@ -4,6 +4,13 @@ import numpy as np
 
 st.set_page_config(page_title = "Math Major", layout = "wide")
 st.title("Math Major Advising")
+col1, col2 = st.columns(2)
+with col1:
+    math_options = ["Default", "Physics", "Computational Mathematics", "Statistics"]
+    option_selected = st.selectbox("Choose your math option", math_options)
+    st.write("You have chosen " + option_selected + " option")
+with col2:
+    st.write("")
 
 # Default df if no file is uploaded
 default_data = {"comm" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
@@ -17,7 +24,7 @@ default_data = {"comm" : [None, None, None, None, None, None, None, None, None, 
                 "fe" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]}
 
 # Upload file    
-uploaded_file = st.sidebar.file_uploader("Choose a CSV file")
+uploaded_file = st.sidebar.file_uploader("Choose a CSV file from last advising")
 if uploaded_file != None:
     uploaded_df = pd.read_csv(uploaded_file)
 else:
@@ -37,9 +44,26 @@ ue_tc = None if uploaded_df["ue"][0] == "" else uploaded_df["ue"][0]
 fes_tc = None if uploaded_df["fes"][0] == "" else uploaded_df["fes"][0]
 fe_tc = None if uploaded_df["fe"][0] == "" else uploaded_df["fe"][0]
 
-math_options = ["Default", "Physics", "Computational Mathematics", "Statistics"]
-option_selected = st.sidebar.selectbox("Choose your math option", math_options)
-st.sidebar.write("You have chosen " + option_selected + " option")
+# Check boxes
+com111z_value = True if uploaded_df["comm"][1] == "True" else False
+spe321_value = True if uploaded_df["comm"][2] == "True" else False
+wri121z_value = True if uploaded_df["comm"][3] == "True" else False
+phy221_value = True if uploaded_df["phy"][1] == "True" else False
+phy222_value = True if uploaded_df["phy"][2] == "True" else False
+phy223_value = True if uploaded_df["phy"][3] == "True" else False
+stat201_value = True if uploaded_df["math"][1] == "True" else False
+math251_value = True if uploaded_df["math"][2] == "True" else False
+math252_value = True if uploaded_df["math"][3] == "True" else False
+math253_value = True if uploaded_df["math"][4] == "True" else False
+math254_value = True if uploaded_df["math"][5] == "True" else False
+math310_value = True if uploaded_df["math"][6] == "True" else False
+math321_value = True if uploaded_df["math"][7] == "True" else False
+math322_value = True if uploaded_df["math"][8] == "True" else False
+math341_value = True if uploaded_df["math"][9] == "True" else False
+math346_value = True if uploaded_df["math"][10] == "True" else False
+math354_value = True if uploaded_df["math"][11] == "True" else False
+math421_value = True if uploaded_df["math"][12] == "True" else False
+math451_value = True if uploaded_df["math"][13] == "True" else False
 
 # Load the course list csv file
 df = pd.read_csv("course_list_utf.csv")
@@ -53,17 +77,32 @@ with st.expander("General Education Classes"):
     # Communication
     with com_col:
         st.write("### Communication (18 Credits)")
-        com_tc = st.selectbox("Comm. Transfer Credits", list(range(0, 76)))
-        com111z = st.checkbox("COM 111Z - Public Speaking") 
-        spe321 = st.checkbox("SPE 321 - Small Group/Team Comm Credits")
-        wri121z = st.checkbox("WRI 121Z - Composition I") 
-        com_choice1 = st.selectbox("Choose one class", ("WRI 122Z - Composition II", "WRI 227Z - Technical Writing"), index = None, placeholder = "Pick One")
-        com_choice2 = st.selectbox("Choose one class", ("WRI 327 - Advanced Tech Writing", "WRI 350 - Documentation Development"), index = None, placeholder = "Pick One")
-        if com_choice1 == None:
+        if uploaded_file == None:
+            com_tc = st.selectbox("Communication Transfer Credits", list(range(0, 76)))
+        else:
+            com_tc = st.selectbox("Communication Transfer Credits", list(range(0, 76)), index=int(uploaded_df["comm"][0]))
+        st.write(com111z_value)
+        com111z = st.checkbox("COM 111Z - Public Speaking", value = com111z_value) 
+        spe321 = st.checkbox("SPE 321 - Small Group/Team Comm Credits", value = spe321_value)
+        wri121z = st.checkbox("WRI 121Z - Composition I", value = wri121z_value) 
+        # Find comm choice value
+        if uploaded_df["comm"][4] == "":
+            com_choice1_index = None
+        else:
+            com_choice1_index = ["Choose No Class", "WRI 122Z - Composition II", "WRI 227Z - Technical Writing"].index(uploaded_df["comm"][4])
+        if uploaded_df["comm"][5] == "":
+            com_choice2_index = None
+        else:
+            com_choice2_index = ["Choose No Class", "WRI 327 - Advanced Tech Writing", "WRI 350 - Documentation Development"].index(uploaded_df["comm"][5])
+
+        com_choice1 = st.selectbox("Choose one class", ["Choose No Class", "WRI 122Z - Composition II", "WRI 227Z - Technical Writing"], index = com_choice1_index, placeholder = "Pick One")
+        com_choice2 = st.selectbox("Choose one class", ["Choose No Class", "WRI 327 - Advanced Tech Writing", "WRI 350 - Documentation Development"], index = None, placeholder = "Pick One")
+        
+        if com_choice1 == None or com_choice1 == "Choose No Class":
             com_choice1_credit = 0
         else:
             com_choice1_credit = 4
-        if com_choice2 == None:
+        if com_choice2 == None or com_choice2 == "Choose No Class":
             com_choice2_credit = 0
         else:
             com_choice2_credit = 3
@@ -73,7 +112,10 @@ with st.expander("General Education Classes"):
     # Humanities
     with hum_col:
         st.write("### Humanities (9 Credits)")
-        hum_tc = st.selectbox("Humanities Transfer Credits", list(range(0, 76)))
+        if uploaded_file == None:
+            hum_tc = st.selectbox("Humanities Transfer Credits", list(range(0, 76)))
+        else:
+            hum_tc = st.selectbox("Humanities Transfer Credits", list(range(0, 76)), index=int(uploaded_df["hum"][0]))
         # Separate Prefix and Course Number for each Humanities elective
         st.write("Humanities Elective 1")
         hum_col1, hum_col2 = st.columns(2)
@@ -117,7 +159,10 @@ with st.expander("General Education Classes"):
     # Social Science
     with ss_col:
         st.write("### Social Science (12 Credits)")
-        ss_tc = st.selectbox("Social Science Transfer Credits", list(range(0, 76)))
+        if uploaded_file == None:
+            ss_tc = st.selectbox("Social Science Transfer Credits", list(range(0, 76)))
+        else:
+            ss_tc = st.selectbox("Social Science Transfer Credits", list(range(0, 76)), index=int(uploaded_df["ss"][0]))
         # Separate Prefix and Course Number for each Humanities elective
         st.write("Social Science Elective 1")
         ss_col1, ss_col2 = st.columns(2)
@@ -172,10 +217,13 @@ with st.expander("General Education Classes"):
     # Physics
     with phy_col:
         st.write("### Physics (19 Credits)")
-        phy_tc = st.selectbox("Physics Transfer Credits", list(range(0, 76)))
-        phy221 = st.checkbox("PHY 221 - General Physics with Calculus I") 
-        phy222 = st.checkbox("PHY 222 - General Physics with Calculus II")
-        phy223 = st.checkbox("PHY 223 - General Physics with Calculus III") 
+        if uploaded_file == None:
+            phy_tc = st.selectbox("Physics Transfer Credits", list(range(0, 76)))
+        else:
+            phy_tc = st.selectbox("Physics Transfer Credits", list(range(0, 76)), index=int(uploaded_df["phy"][0]))
+        phy221 = st.checkbox("PHY 221 - General Physics with Calculus I", value = phy221_value) 
+        phy222 = st.checkbox("PHY 222 - General Physics with Calculus II", value = phy222_value)
+        phy223 = st.checkbox("PHY 223 - General Physics with Calculus III", value = phy223_value) 
 
         # Math/Physics Elective
         st.write("Math/Physics Elective 1")
@@ -215,22 +263,34 @@ with st.expander("Core Mathematics Classes"):
         math_tc = st.selectbox("Mathematics Transfer Credits", list(range(0, 76)))
     else:
         math_tc = st.selectbox("Mathematics Transfer Credits", list(range(0, 76)), index=int(uploaded_df["math"][0]))
-    stat201 = st.checkbox("STAT 201 - Intro to Data Science") 
-    math251 = st.checkbox("MATH 251 - Differential Calculus")
-    math252 = st.checkbox("MATH 252 - Integral Calculus") 
-    math253 = st.checkbox("MATH 253 - Sequences and Series")
-    math254 = st.checkbox("MATH 254 - Vector Calculus I") 
-    math310 = st.checkbox("MATH 310 - Mathematical Structures")
-    math321 = st.checkbox("MATH 321 - Applied Differential Equations I") 
-    math322 = st.checkbox("MATH 322 - Applied Differential Equations II") 
-    math341 = st.checkbox("MATH 341 - Linear Algebra I")  
-    math346 = st.checkbox("MATH 346 - Number Theory") 
-    math354 = st.checkbox("MATH 354 - Vector Calculus II") 
-    math421 = st.checkbox("MATH 421 - Applied Partial Differential Equations I")
-    math451 = st.checkbox("MATH 451 - Applied Numerical Methods I")
+    stat201 = st.checkbox("STAT 201 - Intro to Data Science", value = stat201_value) 
+    math251 = st.checkbox("MATH 251 - Differential Calculus", value = math251_value)
+    math252 = st.checkbox("MATH 252 - Integral Calculus", value = math252_value) 
+    math253 = st.checkbox("MATH 253 - Sequences and Series", value = math253_value)
+    math254 = st.checkbox("MATH 254 - Vector Calculus I", value = math254_value) 
+    math310 = st.checkbox("MATH 310 - Mathematical Structures", value = math310_value)
+    math321 = st.checkbox("MATH 321 - Applied Differential Equations I", value = math321_value) 
+    math322 = st.checkbox("MATH 322 - Applied Differential Equations II", value = math322_value) 
+    math341 = st.checkbox("MATH 341 - Linear Algebra I", value = math341_value)  
+    math346 = st.checkbox("MATH 346 - Number Theory", value = math346_value) 
+    math354 = st.checkbox("MATH 354 - Vector Calculus II", value = math354_value) 
+    math421 = st.checkbox("MATH 421 - Applied Partial Differential Equations I", value = math421_value)
+    math451 = st.checkbox("MATH 451 - Applied Numerical Methods I", value = math451_value)
 
-    math_choice1 = st.selectbox("Choose one class", ("Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Applied Numerical Methods II", "MATH 453 - Applied Numerical Methods III"), index = None, placeholder = "Pick One", key = "math_choice1")
-    math_choice2 = st.selectbox("Choose one class", ("Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Applied Numerical Methods II", "MATH 453 - Applied Numerical Methods III"), index = None, placeholder = "Pick One", key = "math_choice2")
+    # Find math choice value
+    
+    if uploaded_df["math"][14] == "":
+        math_choice1_index = None
+    else:
+        math_choice1_index = ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Applied Numerical Methods II", "MATH 453 - Applied Numerical Methods III"].index(uploaded_df["math"][14])
+    st.write(math_choice1_index)
+    if uploaded_df["math"][15] == "":
+        math_choice2_index = None
+    else:
+        math_choice2_index = ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Applied Numerical Methods II", "MATH 453 - Applied Numerical Methods III"].index(uploaded_df["math"][15])
+    
+    math_choice1 = st.selectbox("Choose one class", ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Applied Numerical Methods II", "MATH 453 - Applied Numerical Methods III"], index = math_choice1_index, placeholder = "Pick One", key = "math_choice1")
+    math_choice2 = st.selectbox("Choose one class", ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Applied Numerical Methods II", "MATH 453 - Applied Numerical Methods III"], index = math_choice2_index, placeholder = "Pick One", key = "math_choice2")
 
     if math_choice1 == None or math_choice1 == "Choose No Class":
         math_choice1_credit = 0
@@ -250,7 +310,10 @@ with st.expander("Elective Classes"):
     # Lower div electives
     with lower_ele_col:
         st.write("### Lower Division Electives (35 Credits)")
-        le_tc = st.selectbox("Lower Division Electives Transfer Credits", list(range(0, 76)))
+        if uploaded_file == None:
+            le_tc = st.selectbox("Lower Division Electives Transfer Credits", list(range(0, 76)))
+        else:
+            le_tc = st.selectbox("Lower Division Electives Transfer Credits", list(range(0, 76)), index=int(uploaded_df["le"][0]))
         st.write("Specific Elective Classes")
 
         le_col1, le_col2 = st.columns(2)
@@ -428,7 +491,10 @@ with st.expander("Elective Classes"):
     # Focused elective sequence
     with foc_ele_seq_col:
         st.write("### Focused Elective Sequence (9 Credits)")
-        fes_tc = st.selectbox("Focused Elective Sequence Transfer Credits", list(range(0, 76)))
+        if uploaded_file == None:
+            fes_tc = st.selectbox("Focused Elective Sequence Transfer Credits", list(range(0, 76)))
+        else:
+            fes_tc = st.selectbox("Focused Elective Sequence Transfer Credits", list(range(0, 76)), index=int(uploaded_df["fes"][0]))
         st.write("Specific Elective Classes")
 
         # Class 1
@@ -495,7 +561,10 @@ with st.expander("Elective Classes"):
     # Focused electives
     with foc_ele_col:
         st.write("### Focused Electives (7 Credits)")
-        fe_tc = st.selectbox("Focused Electives Transfer Credits", list(range(0, 76)))
+        if uploaded_file == None:
+            fe_tc = st.selectbox("Focused Elective Transfer Credits", list(range(0, 76)))
+        else:
+            fe_tc = st.selectbox("Focused Elective Transfer Credits", list(range(0, 76)), index=int(uploaded_df["fe"][0]))
         st.write("Specific Elective Classes")
 
         # Class 1
@@ -599,7 +668,7 @@ with st.expander("Analysis and Download"):
 
     # Download file
     st.download_button(
-        "Download CSV File",
+        "Download CSV File for future advising",
         conv_csv,
         "math_major_advising.csv",
         "text/csv",
