@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
 st.set_page_config(page_title = "Math Major", layout = "wide")
 st.title("Math Major Advising")
@@ -8,9 +9,9 @@ col1, col2 = st.columns(2)
 with col1:
     math_options = ["Default", "Physics", "Computational Mathematics", "Statistics"]
     option_selected = st.selectbox("Choose your math option", math_options)
-    st.write("You have chosen " + option_selected + " option")
+    st.write("## You have chosen " + option_selected + " option")
 with col2:
-    st.write("")
+    student_name = st.text_input("Student Name (optional):")
 
 # Default df if no file is uploaded
 default_data = {"comm" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
@@ -108,7 +109,7 @@ with st.expander("General Education Classes"):
         else:
             com_choice2_credit = 3
         com_credits = com_tc + 4*com111z + 3*spe321 + 4*wri121z + com_choice1_credit + com_choice2_credit
-        st.write("###### Total Communication Credits: " + str(com_credits))
+        st.write("###### :green[Total Communication Credits:] " + str(f":green[{com_credits}]"))
 
     # Humanities
     with hum_col:
@@ -177,7 +178,7 @@ with st.expander("General Education Classes"):
             hum3_credit = 0
 
         hum_credits = hum_tc + int(hum1_credit) + int(hum2_credit) + int(hum3_credit)
-        st.write("###### Total Humanities Credits: " + str(hum_credits))
+        st.write("###### :green[Total Humanities Credits:] " + str(f":green[{hum_credits}]"))
 
     # Social Science
     with ss_col:
@@ -213,7 +214,7 @@ with st.expander("General Education Classes"):
                 ss2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["ss"][3]))), placeholder = "Pick One", key = "ss2_prefix1")
             df_ss2 = df[df['Prefix'] == ss2_prefix]
         with ss_col2:  
-            if uploaded_file != None and uploaded_df["ss"][3] != "":
+            if uploaded_file != None and uploaded_df["ss"][4] != "":
                 ss2_cn = st.selectbox("Number", list(df_ss2["Code"]), key = "ss2_cn", index = int(list(df_ss2["Code"]).index(uploaded_df["ss"][4])))
             else:
                 ss2_cn = st.selectbox("Number", list(df_ss2["Code"]), key = "ss2_cn1")
@@ -228,7 +229,7 @@ with st.expander("General Education Classes"):
                 ss3_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["ss"][5]))), placeholder = "Pick One", key = "ss3_prefix1")
             df_ss3 = df[df['Prefix'] == ss3_prefix]
         with ss_col2:  
-            if uploaded_file != None and uploaded_df["ss"][5] != "":
+            if uploaded_file != None and uploaded_df["ss"][6] != "":
                 ss3_cn = st.selectbox("Number", list(df_ss3["Code"]), key = "ss3_cn", index = int(list(df_ss3["Code"]).index(uploaded_df["ss"][6])))
             else:
                 ss3_cn = st.selectbox("Number", list(df_ss3["Code"]), key = "ss3_cn1")
@@ -243,7 +244,7 @@ with st.expander("General Education Classes"):
                 ss4_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["ss"][7]))), placeholder = "Pick One", key = "ss4_prefix1")
             df_ss4 = df[df['Prefix'] == ss4_prefix]
         with ss_col2:  
-            if uploaded_file != None and uploaded_df["ss"][7] != "":
+            if uploaded_file != None and uploaded_df["ss"][8] != "":
                 ss4_cn = st.selectbox("Number", list(df_ss4["Code"]), key = "ss4_cn", index = int(list(df_ss4["Code"]).index(uploaded_df["ss"][8])))
             else:
                 ss4_cn = st.selectbox("Number", list(df_ss4["Code"]), key = "ss4_cn1")
@@ -281,31 +282,43 @@ with st.expander("General Education Classes"):
         st.write("Math/Physics Elective 1")
         phy_col1, phy_col2 = st.columns(2)
         with phy_col1:
-            phy_ele1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "phy_ele1_prefix")
-            df_phy1 = df[df['Prefix'] == phy_ele1_prefix]
-        with phy_col2:    
-            phy_ele1_cn = st.selectbox("Number", list(df_phy1["Code"]), key = "phy_ele1_cn")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["phy"][4] == ""):
+                phy1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "phy1_prefix")
+            else:
+                phy1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["phy"][4]))), placeholder = "Pick One", key = "phy1_prefix1")
+            df_phy1 = df[df['Prefix'] == phy1_prefix]
+        with phy_col2:  
+            if uploaded_file != None and uploaded_df["phy"][5] != "":
+                phy1_cn = st.selectbox("Number", list(df_phy1["Code"]), key = "phy1_cn", index = int(list(df_phy1["Code"]).index(uploaded_df["phy"][5])))
+            else:
+                phy1_cn = st.selectbox("Number", list(df_phy1["Code"]), key = "phy1_cn1")
             
         st.write("Math/Physics Elective 2")
         phy_col1, phy_col2 = st.columns(2)
         with phy_col1:
-            phy_ele2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "phy_ele2_prefix")
-            df_phy2 = df[df['Prefix'] == phy_ele2_prefix]
-        with phy_col2:    
-            phy_ele2_cn = st.selectbox("Number", list(df_phy2["Code"]), key = "phy_ele2_cn")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["phy"][6] == ""):
+                phy2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "phy2_prefix")
+            else:
+                phy2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["phy"][6]))), placeholder = "Pick One", key = "phy2_prefix1")
+            df_phy2 = df[df['Prefix'] == phy2_prefix]
+        with phy_col2:  
+            if uploaded_file != None and uploaded_df["phy"][7] != "":
+                phy2_cn = st.selectbox("Number", list(df_phy2["Code"]), key = "phy2_cn", index = int(list(df_phy2["Code"]).index(uploaded_df["phy"][7])))
+            else:
+                phy2_cn = st.selectbox("Number", list(df_phy2["Code"]), key = "phy2_cn1")
         
         # Find the credit hours for each elective 
-        phy1_credit = df_phy1[df_phy1["Code"] == phy_ele1_cn]["Credit Hours:"]
-        phy2_credit = df_phy2[df_phy2["Code"] == phy_ele2_cn]["Credit Hours:"]      
+        phy1_credit = df_phy1[df_phy1["Code"] == phy1_cn]["Credit Hours:"]
+        phy2_credit = df_phy2[df_phy2["Code"] == phy2_cn]["Credit Hours:"]      
 
         # This is if nothing is chosen then the credits defaults to 0
-        if phy_ele1_prefix == None or phy_ele1_cn == None:
+        if phy1_prefix == None or phy1_cn == None:
             phy1_credit = 0
-        if phy_ele2_prefix == None or phy_ele2_cn == None:
+        if phy2_prefix == None or phy2_cn == None:
             phy2_credit = 0
 
         phy_credits = phy_tc + 4*phy221 + 4*phy222 + 4*phy223 + int(phy1_credit) + int(phy2_credit)
-        st.write("###### Total Physics Credits: " + str(phy_credits))
+        st.write("###### :green[Total Physics Credits:] " + str(f":green[{phy_credits}]"))
 
 
 # Core Math Classes
@@ -353,7 +366,7 @@ with st.expander("Core Mathematics Classes"):
     else:
         math_choice2_credit = 1
     math_credits = math_tc + 4*(stat201 + math251 + math252 + math253 + math254 + math310 + math321 + math322 + math341 + math346 + math354 + math421 + math451 + math_choice1_credit + math_choice2_credit)
-    st.write("###### Total Mathematics Credits: " + str(math_credits))
+    st.write("###### :green[Total Core Mathematics Credits:] " + str(f":green[{math_credits}]"))
 
 # General Education Classes
 with st.expander("Elective Classes"):
@@ -391,7 +404,7 @@ with st.expander("Elective Classes"):
                 le2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][3]))), placeholder = "Pick One", key = "le2_prefix1")
             df_le2 = df[df['Prefix'] == le2_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][3] != "":
+            if uploaded_file != None and uploaded_df["le"][4] != "":
                 le2_cn = st.selectbox("Number", list(df_le2["Code"]), key = "le2_cn", index = int(list(df_le2["Code"]).index(uploaded_df["le"][4])))
             else:
                 le2_cn = st.selectbox("Number", list(df_le2["Code"]), key = "le2_cn1")  
@@ -405,7 +418,7 @@ with st.expander("Elective Classes"):
                 le3_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][5]))), placeholder = "Pick One", key = "le3_prefix1")
             df_le3 = df[df['Prefix'] == le3_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][5] != "":
+            if uploaded_file != None and uploaded_df["le"][6] != "":
                 le3_cn = st.selectbox("Number", list(df_le3["Code"]), key = "le3_cn", index = int(list(df_le3["Code"]).index(uploaded_df["le"][6])))
             else:
                 le3_cn = st.selectbox("Number", list(df_le3["Code"]), key = "le3_cn1")   
@@ -419,7 +432,7 @@ with st.expander("Elective Classes"):
                 le4_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][7]))), placeholder = "Pick One", key = "le4_prefix1")
             df_le4 = df[df['Prefix'] == le4_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][7] != "":
+            if uploaded_file != None and uploaded_df["le"][8] != "":
                 le4_cn = st.selectbox("Number", list(df_le4["Code"]), key = "le4_cn", index = int(list(df_le4["Code"]).index(uploaded_df["le"][8])))
             else:
                 le4_cn = st.selectbox("Number", list(df_le4["Code"]), key = "le4_cn1")  
@@ -433,7 +446,7 @@ with st.expander("Elective Classes"):
                 le5_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][9]))), placeholder = "Pick One", key = "le5_prefix1")
             df_le5 = df[df['Prefix'] == le5_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][9] != "":
+            if uploaded_file != None and uploaded_df["le"][10] != "":
                 le5_cn = st.selectbox("Number", list(df_le5["Code"]), key = "le5_cn", index = int(list(df_le5["Code"]).index(uploaded_df["le"][10])))
             else:
                 le5_cn = st.selectbox("Number", list(df_le5["Code"]), key = "le5_cn1")  
@@ -447,7 +460,7 @@ with st.expander("Elective Classes"):
                 le6_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][11]))), placeholder = "Pick One", key = "le6_prefix1")
             df_le6 = df[df['Prefix'] == le6_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][11] != "":
+            if uploaded_file != None and uploaded_df["le"][12] != "":
                 le6_cn = st.selectbox("Number", list(df_le6["Code"]), key = "le6_cn", index = int(list(df_le6["Code"]).index(uploaded_df["le"][12])))
             else:
                 le6_cn = st.selectbox("Number", list(df_le6["Code"]), key = "le6_cn1") 
@@ -461,7 +474,7 @@ with st.expander("Elective Classes"):
                 le7_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][13]))), placeholder = "Pick One", key = "le7_prefix1")
             df_le7 = df[df['Prefix'] == le7_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][13] != "":
+            if uploaded_file != None and uploaded_df["le"][14] != "":
                 le7_cn = st.selectbox("Number", list(df_le7["Code"]), key = "le7_cn", index = int(list(df_le7["Code"]).index(uploaded_df["le"][14])))
             else:
                 le7_cn = st.selectbox("Number", list(df_le7["Code"]), key = "le7_cn1")  
@@ -475,7 +488,7 @@ with st.expander("Elective Classes"):
                 le8_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][15]))), placeholder = "Pick One", key = "le8_prefix1")
             df_le8 = df[df['Prefix'] == le8_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][15] != "":
+            if uploaded_file != None and uploaded_df["le"][16] != "":
                 le8_cn = st.selectbox("Number", list(df_le8["Code"]), key = "le8_cn", index = int(list(df_le8["Code"]).index(uploaded_df["le"][16])))
             else:
                 le8_cn = st.selectbox("Number", list(df_le8["Code"]), key = "le8_cn1")  
@@ -489,7 +502,7 @@ with st.expander("Elective Classes"):
                 le9_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][17]))), placeholder = "Pick One", key = "le9_prefix1")
             df_le9 = df[df['Prefix'] == le9_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][17] != "":
+            if uploaded_file != None and uploaded_df["le"][18] != "":
                 le9_cn = st.selectbox("Number", list(df_le9["Code"]), key = "le9_cn", index = int(list(df_le9["Code"]).index(uploaded_df["le"][18])))
             else:
                 le9_cn = st.selectbox("Number", list(df_le9["Code"]), key = "le9_cn1")
@@ -503,7 +516,7 @@ with st.expander("Elective Classes"):
                 le10_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][19]))), placeholder = "Pick One", key = "le10_prefix1")
             df_le10 = df[df['Prefix'] == le10_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][19] != "":
+            if uploaded_file != None and uploaded_df["le"][20] != "":
                 le10_cn = st.selectbox("Number", list(df_le10["Code"]), key = "le10_cn", index = int(list(df_le10["Code"]).index(uploaded_df["le"][20])))
             else:
                 le10_cn = st.selectbox("Number", list(df_le10["Code"]), key = "le10_cn1")  
@@ -517,7 +530,7 @@ with st.expander("Elective Classes"):
                 le11_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][21]))), placeholder = "Pick One", key = "le11_prefix1")
             df_le11 = df[df['Prefix'] == le11_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][21] != "":
+            if uploaded_file != None and uploaded_df["le"][22] != "":
                 le11_cn = st.selectbox("Number", list(df_le11["Code"]), key = "le11_cn", index = int(list(df_le11["Code"]).index(uploaded_df["le"][22])))
             else:
                 le11_cn = st.selectbox("Number", list(df_le11["Code"]), key = "le11_cn1") 
@@ -531,7 +544,7 @@ with st.expander("Elective Classes"):
                 le12_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][23]))), placeholder = "Pick One", key = "le12_prefix1")
             df_le12 = df[df['Prefix'] == le12_prefix]
         with le_col2:  
-            if uploaded_file != None and uploaded_df["le"][23] != "":
+            if uploaded_file != None and uploaded_df["le"][24] != "":
                 le12_cn = st.selectbox("Number", list(df_le12["Code"]), key = "le12_cn", index = int(list(df_le12["Code"]).index(uploaded_df["le"][24])))
             else:
                 le12_cn = st.selectbox("Number", list(df_le12["Code"]), key = "le12_cn1")
@@ -577,7 +590,7 @@ with st.expander("Elective Classes"):
             le12_credit = 0
         
         le_credits = le_tc + int(le1_credit) + int(le2_credit) + int(le3_credit) + int(le4_credit) + int(le5_credit) + int(le6_credit) + int(le7_credit) + int(le8_credit) + int(le9_credit) + int(le10_credit) + int(le11_credit) + int(le12_credit)
-        st.write("###### Total Lower Division Elective Credits: " + str(le_credits))
+        st.write("###### :green[Total Lower Division Elective Credits:] " + str(f":green[{le_credits}]"))
     
     # Lower div electives
     with upper_ele_col:
@@ -629,7 +642,7 @@ with st.expander("Elective Classes"):
             ue2_credit = 0
 
         ue_credits = ue_tc + int(ue1_credit) + int(ue2_credit)
-        st.write("###### Total Upper Division Elective Credits: " + str(ue_credits))
+        st.write("###### :green[Total Upper Division Elective Credits:] " + str(f":green[{ue_credits}]"))
     
 
 
@@ -701,7 +714,7 @@ with st.expander("Elective Classes"):
             fes3_credit = 0
 
         fes_credits = fes_tc + int(fes1_credit) + int(fes2_credit) + int(fes3_credit)
-        st.write("###### Total Focused Elective Sequence Credits: " + str(fes_credits))
+        st.write("###### :green[Total Focused Elective Sequence Credits:] " + str(f":green[{fes_credits}]"))
 
     # Focused electives
     with foc_ele_col:
@@ -754,7 +767,7 @@ with st.expander("Elective Classes"):
             fe2_credit = 0
 
         fe_credits = fe_tc + int(fe1_credit) + int(fe2_credit)
-        st.write("###### Total Focused Electives Credits: " + str(fe_credits))
+        st.write("###### :green[Total Focused Elective Credits:] " + str(f":green[{fe_credits}]"))
 
 # Update credits on the sidebar
 st.sidebar.write("#### Total Communication Credits: " + str(com_credits) + " (" + str(18-com_credits) + " needed)")
@@ -790,13 +803,13 @@ with st.expander("Analysis and Download"):
     total_credits_needed = 180 - total_credits_acquired
     st.write("#### Total Credits Acquired - " + str(total_credits_acquired))
     st.write("#### Total Credits Needed - " + str(total_credits_needed))
-    st.sidebar.write("## CREDITS - " + str(total_credits_acquired) + "/" + str(180))
+    st.sidebar.write("## :green[CREDITS] - " + str(total_credits_acquired) + "/" + str(180))
 
     # Creating a data frame to download
     created_data = {"comm" : [com_tc, com111z, spe321, wri121z, com_choice1, com_choice2, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "hum" : [hum_tc, hum1_prefix, hum1_cn, hum2_prefix, hum2_cn, hum3_prefix, hum3_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "ss" : [ss_tc, ss1_prefix, ss1_cn, ss2_prefix, ss2_cn, ss3_prefix, ss3_cn, ss4_prefix, ss4_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
-                    "phy" : [phy_tc, phy221, phy222, phy223, phy_ele1_prefix, phy_ele1_cn, phy_ele2_prefix, phy_ele2_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                    "phy" : [phy_tc, phy221, phy222, phy223, phy1_prefix, phy1_cn, phy2_prefix, phy2_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "math" : [math_tc, stat201, math251, math252, math253, math254, math310, math321, math322, math341, math346, math354, math421, math451, math_choice1, math_choice2, None, None, None, None, None, None, None, None, None],
                     "le" : [le_tc, le1_prefix, le1_cn, le2_prefix, le2_cn, le3_prefix, le3_cn, le4_prefix, le4_cn, le5_prefix, le5_cn, le6_prefix, le6_cn, le7_prefix, le7_cn, \
                             le8_prefix, le8_cn, le9_prefix, le9_cn, le10_prefix, le10_cn, le11_prefix, le11_cn, le12_prefix, le12_cn],
@@ -810,60 +823,15 @@ with st.expander("Analysis and Download"):
         conv_df = pd.DataFrame(df)
         return conv_df.to_csv(index=False).encode('utf-8')
     conv_csv = convert_df(created_data)
-
+    
     # Download file
     st.download_button(
         "Download CSV File for future advising",
         conv_csv,
-        "math_major_advising.csv",
+        "math_major_advising_" + str(student_name) + "_" + str(datetime.today().strftime('%Y-%m-%d %H:%M:%S')) +".csv",
         "text/csv",
         key='download-csv',
         help = 'Download a CSV file for future advising'
     )
 
 
-
-
-   
-
-# uploaded_file = st.sidebar.file_uploader("Choose a CSV file")
-# if uploaded_file != None:
-#     uploaded_df = pd.read_csv(uploaded_file)
-#     st.dataframe(uploaded_df)
-#     st.write(uploaded_df["hum"])
-# if uploaded_file != None:
-#     bytes_data = uploaded_file.read()
-#     st.write("filename:", uploaded_file.name)
-#     st.write(bytes_data)
-
-#     uploaded_df = pd.read_csv(uploaded_file)
-#     st.dataframe(uploaded_df)
-
-# for uploaded_file in uploaded_files:
-#     bytes_data = uploaded_file.read()
-#     st.write("filename:", uploaded_file.name)
-#     st.write(bytes_data)
-
-# option_selected = st.sidebar.selectbox("Choose your math option", math_options)
-# prefix_selected = st.sidebar.selectbox("Prefix", list(cp))
-# df_p = df[df['Prefix'] == prefix_selected]
-# #for i in df['Prefix']:
-# #st.write(df_p)
-# new_df = df[df['Prefix'] == "CST"]
-# course_names = new_df['Name'].to_list()
-
-# #print(type(list(cp)))
-# #course_prefix = cp.to_list()
-
-# course_selected_prefix = df[df['Prefix'] == prefix_selected]
-# course_name = st.sidebar.selectbox("Courses", list(course_selected_prefix['Name']))
-# course_number = df_p.loc[df['Name'] == course_name, 'Code']
-# st.sidebar.selectbox("Number", list(course_selected_prefix['Code']))
-# st.sidebar.header("This is a test of the header")
-# #st.write(course_name)
-# #print(len(course_number.values))
-# #if len(course_number.values) > 0:
-#     #st.write("You selected: " + str(course_number.values[0]) + " - " + course_name)
-# b1 = st.sidebar.button("This is a button, click it")
-# if b1:
-#     st.write("You are bad")
