@@ -129,7 +129,7 @@ with st.expander("General Education Classes"):
                 hum1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["hum"][1]))), placeholder = "Pick One", key = "hum1_prefix1")
             df_hum1 = df[df['Prefix'] == hum1_prefix]
         with hum_col2:  
-            if uploaded_file != None and hum1_prefix == uploaded_df["hum"][1]:  
+            if uploaded_file != None and uploaded_df["hum"][2] != "":
                 hum1_cn = st.selectbox("Number", list(df_hum1["Code"]), key = "hum1_cn", index = int(list(df_hum1["Code"]).index(uploaded_df["hum"][2])))
             else:
                 hum1_cn = st.selectbox("Number", list(df_hum1["Code"]), key = "hum1_cn1")
@@ -144,7 +144,7 @@ with st.expander("General Education Classes"):
                 hum2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["hum"][3]))), placeholder = "Pick One", key = "hum2_prefix1")
             df_hum2 = df[df['Prefix'] == hum2_prefix]
         with hum_col2:  
-            if uploaded_file != None and hum2_prefix == uploaded_df["hum"][3]:  
+            if uploaded_file != None and uploaded_df["hum"][4] != "":  
                 hum2_cn = st.selectbox("Number", list(df_hum2["Code"]), key = "hum2_cn", index = int(list(df_hum2["Code"]).index(uploaded_df["hum"][4])))
             else:
                 hum2_cn = st.selectbox("Number", list(df_hum2["Code"]), key = "hum2_cn1")
@@ -159,7 +159,7 @@ with st.expander("General Education Classes"):
                 hum3_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["hum"][5]))), placeholder = "Pick One", key = "hum3_prefix1")
             df_hum3 = df[df['Prefix'] == hum3_prefix]
         with hum_col2:  
-            if uploaded_file != None and hum3_prefix == uploaded_df["hum"][5]:  
+            if uploaded_file != None and uploaded_df["hum"][6] != "":  
                 hum3_cn = st.selectbox("Number", list(df_hum3["Code"]), key = "hum3_cn", index = int(list(df_hum3["Code"]).index(uploaded_df["hum"][6])))
             else:
                 hum3_cn = st.selectbox("Number", list(df_hum3["Code"]), key = "hum3_cn1")
@@ -187,55 +187,84 @@ with st.expander("General Education Classes"):
         else:
             ss_tc = st.selectbox("Social Science Transfer Credits", list(range(0, 76)), index=int(uploaded_df["ss"][0]))
         # Separate Prefix and Course Number for each Humanities elective
+        
+        # Course 1
         st.write("Social Science Elective 1")
         ss_col1, ss_col2 = st.columns(2)
         with ss_col1:
-            ss_ele1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "ss_ele1_prefix")
-            df_ss1 = df[df['Prefix'] == ss_ele1_prefix]
-        with ss_col2:    
-            ss_ele1_cn = st.selectbox("Number", list(df_ss1["Code"]), key = "ss_ele1_cn")
-            
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["ss"][1] == ""):
+                ss1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "ss1_prefix")
+            else:
+                ss1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["ss"][1]))), placeholder = "Pick One", key = "ss1_prefix1")
+            df_ss1 = df[df['Prefix'] == ss1_prefix]
+        with ss_col2:  
+            if uploaded_file != None and uploaded_df["ss"][2] != "":
+                ss1_cn = st.selectbox("Number", list(df_ss1["Code"]), key = "ss1_cn", index = int(list(df_ss1["Code"]).index(uploaded_df["ss"][2])))
+            else:
+                ss1_cn = st.selectbox("Number", list(df_ss1["Code"]), key = "ss1_cn1")
+
+        # Course 2    
         st.write("Social Science Elective 2")
         ss_col1, ss_col2 = st.columns(2)
         with ss_col1:
-            ss_ele2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "ss_ele2_prefix")
-            df_ss2 = df[df['Prefix'] == ss_ele2_prefix]
-        with ss_col2:    
-            ss_ele2_cn = st.selectbox("Number", list(df_ss2["Code"]), key = "ss_ele2_cn")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["ss"][3] == ""):
+                ss2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "ss2_prefix")
+            else:
+                ss2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["ss"][3]))), placeholder = "Pick One", key = "ss2_prefix1")
+            df_ss2 = df[df['Prefix'] == ss2_prefix]
+        with ss_col2:  
+            if uploaded_file != None and uploaded_df["ss"][3] != "":
+                ss2_cn = st.selectbox("Number", list(df_ss2["Code"]), key = "ss2_cn", index = int(list(df_ss2["Code"]).index(uploaded_df["ss"][4])))
+            else:
+                ss2_cn = st.selectbox("Number", list(df_ss2["Code"]), key = "ss2_cn1")
         
+        # Course 3
         st.write("Social Science Elective 3")
         ss_col1, ss_col2 = st.columns(2)
         with ss_col1:
-            ss_ele3_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "ss_ele3_prefix")
-            df_ss3 = df[df['Prefix'] == ss_ele3_prefix]
-        with ss_col2:    
-            ss_ele3_cn = st.selectbox("Number", list(df_ss3["Code"]), key = "ss_ele3_cn")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["ss"][5] == ""):
+                ss3_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "ss3_prefix")
+            else:
+                ss3_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["ss"][5]))), placeholder = "Pick One", key = "ss3_prefix1")
+            df_ss3 = df[df['Prefix'] == ss3_prefix]
+        with ss_col2:  
+            if uploaded_file != None and uploaded_df["ss"][5] != "":
+                ss3_cn = st.selectbox("Number", list(df_ss3["Code"]), key = "ss3_cn", index = int(list(df_ss3["Code"]).index(uploaded_df["ss"][6])))
+            else:
+                ss3_cn = st.selectbox("Number", list(df_ss3["Code"]), key = "ss3_cn1")
+            
         
         st.write("Social Science Elective 4")
         ss_col1, ss_col2 = st.columns(2)
         with ss_col1:
-            ss_ele4_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "ss_ele4_prefix")
-            df_ss4 = df[df['Prefix'] == ss_ele4_prefix]
-        with ss_col2:    
-            ss_ele4_cn = st.selectbox("Number", list(df_ss4["Code"]), key = "ss_ele4_cn")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["ss"][7] == ""):
+                ss4_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "ss4_prefix")
+            else:
+                ss4_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["ss"][7]))), placeholder = "Pick One", key = "ss4_prefix1")
+            df_ss4 = df[df['Prefix'] == ss4_prefix]
+        with ss_col2:  
+            if uploaded_file != None and uploaded_df["ss"][7] != "":
+                ss4_cn = st.selectbox("Number", list(df_ss4["Code"]), key = "ss4_cn", index = int(list(df_ss4["Code"]).index(uploaded_df["ss"][8])))
+            else:
+                ss4_cn = st.selectbox("Number", list(df_ss4["Code"]), key = "ss4_cn1")
 
         # Find the credit hours for each elective 
-        ss1_credit = df_ss1[df_ss1["Code"] == ss_ele1_cn]["Credit Hours:"]
-        ss2_credit = df_ss2[df_ss2["Code"] == ss_ele2_cn]["Credit Hours:"]
-        ss3_credit = df_ss3[df_ss3["Code"] == ss_ele3_cn]["Credit Hours:"]
-        ss4_credit = df_ss3[df_ss3["Code"] == ss_ele3_cn]["Credit Hours:"]
+        ss1_credit = df_ss1[df_ss1["Code"] == ss1_cn]["Credit Hours:"]
+        ss2_credit = df_ss2[df_ss2["Code"] == ss2_cn]["Credit Hours:"]
+        ss3_credit = df_ss3[df_ss3["Code"] == ss3_cn]["Credit Hours:"]
+        ss4_credit = df_ss4[df_ss4["Code"] == ss4_cn]["Credit Hours:"]
         # This is if nothing is chosen then the credits defaults to 0
-        if ss_ele1_prefix == None or ss_ele1_cn == None:
+        if ss1_prefix == None or ss1_cn == None:
             ss1_credit = 0
-        if ss_ele2_prefix == None or ss_ele2_cn == None:
+        if ss2_prefix == None or ss2_cn == None:
             ss2_credit = 0
-        if ss_ele3_prefix == None or ss_ele3_cn == None:
+        if ss3_prefix == None or ss3_cn == None:
             ss3_credit = 0
-        if ss_ele4_prefix == None or ss_ele4_cn == None:
+        if ss4_prefix == None or ss4_cn == None:
             ss4_credit = 0
 
         ss_credits = ss_tc + int(ss1_credit) + int(ss2_credit) + int(ss3_credit) + int(ss4_credit)
-        st.write("###### Total Social Science Credits: " + str(ss_credits))
+        st.write("###### :green[Total Social Science Credits:] " + str(f":green[{ss_credits}]"))
 
     # Physics
     with phy_col:
@@ -339,80 +368,173 @@ with st.expander("Elective Classes"):
             le_tc = st.selectbox("Lower Division Electives Transfer Credits", list(range(0, 76)), index=int(uploaded_df["le"][0]))
         st.write("Specific Elective Classes")
 
+        # Course 1
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le1_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][1] == ""):
+                le1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le1_prefix")
+            else:
+                le1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][1]))), placeholder = "Pick One", key = "le1_prefix1")
             df_le1 = df[df['Prefix'] == le1_prefix]
-        with le_col2:    
-            le1_cn = st.selectbox("Number", list(df_le1["Code"]), key = "le1_cn") 
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][2] != "":
+                le1_cn = st.selectbox("Number", list(df_le1["Code"]), key = "le1_cn", index = int(list(df_le1["Code"]).index(uploaded_df["le"][2])))
+            else:
+                le1_cn = st.selectbox("Number", list(df_le1["Code"]), key = "le1_cn1") 
+
+        # Course 2
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le2_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][3] == ""):
+                le2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le2_prefix")
+            else:
+                le2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][3]))), placeholder = "Pick One", key = "le2_prefix1")
             df_le2 = df[df['Prefix'] == le2_prefix]
-        with le_col2:    
-            le2_cn = st.selectbox("Number", list(df_le2["Code"]), key = "le2_cn")   
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][3] != "":
+                le2_cn = st.selectbox("Number", list(df_le2["Code"]), key = "le2_cn", index = int(list(df_le2["Code"]).index(uploaded_df["le"][4])))
+            else:
+                le2_cn = st.selectbox("Number", list(df_le2["Code"]), key = "le2_cn1")  
+            
+        # Course 3
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le3_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le3_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][5] == ""):
+                le3_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le3_prefix")
+            else:
+                le3_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][5]))), placeholder = "Pick One", key = "le3_prefix1")
             df_le3 = df[df['Prefix'] == le3_prefix]
-        with le_col2:    
-            le3_cn = st.selectbox("Number", list(df_le3["Code"]), key = "le3_cn")  
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][5] != "":
+                le3_cn = st.selectbox("Number", list(df_le3["Code"]), key = "le3_cn", index = int(list(df_le3["Code"]).index(uploaded_df["le"][6])))
+            else:
+                le3_cn = st.selectbox("Number", list(df_le3["Code"]), key = "le3_cn1")   
+
+        # Course 4    
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le4_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le4_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][7] == ""):
+                le4_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le4_prefix")
+            else:
+                le4_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][7]))), placeholder = "Pick One", key = "le4_prefix1")
             df_le4 = df[df['Prefix'] == le4_prefix]
-        with le_col2:    
-            le4_cn = st.selectbox("Number", list(df_le4["Code"]), key = "le4_cn") 
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][7] != "":
+                le4_cn = st.selectbox("Number", list(df_le4["Code"]), key = "le4_cn", index = int(list(df_le4["Code"]).index(uploaded_df["le"][8])))
+            else:
+                le4_cn = st.selectbox("Number", list(df_le4["Code"]), key = "le4_cn1")  
         
+        # Course 5
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le5_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le5_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][9] == ""):
+                le5_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le5_prefix")
+            else:
+                le5_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][9]))), placeholder = "Pick One", key = "le5_prefix1")
             df_le5 = df[df['Prefix'] == le5_prefix]
-        with le_col2:    
-            le5_cn = st.selectbox("Number", list(df_le5["Code"]), key = "le5_cn") 
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][9] != "":
+                le5_cn = st.selectbox("Number", list(df_le5["Code"]), key = "le5_cn", index = int(list(df_le5["Code"]).index(uploaded_df["le"][10])))
+            else:
+                le5_cn = st.selectbox("Number", list(df_le5["Code"]), key = "le5_cn1")  
+
+        # Course 6
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le6_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le6_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][11] == ""):
+                le6_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le6_prefix")
+            else:
+                le6_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][11]))), placeholder = "Pick One", key = "le6_prefix1")
             df_le6 = df[df['Prefix'] == le6_prefix]
-        with le_col2:    
-            le6_cn = st.selectbox("Number", list(df_le6["Code"]), key = "le6_cn")   
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][11] != "":
+                le6_cn = st.selectbox("Number", list(df_le6["Code"]), key = "le6_cn", index = int(list(df_le6["Code"]).index(uploaded_df["le"][12])))
+            else:
+                le6_cn = st.selectbox("Number", list(df_le6["Code"]), key = "le6_cn1") 
+
+        # Course 7
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le7_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le7_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][13] == ""):
+                le7_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le7_prefix")
+            else:
+                le7_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][13]))), placeholder = "Pick One", key = "le7_prefix1")
             df_le7 = df[df['Prefix'] == le7_prefix]
-        with le_col2:    
-            le7_cn = st.selectbox("Number", list(df_le7["Code"]), key = "le7_cn")  
-        le_col1, le_col2 = st.columns(2)
-        with le_col1:
-            le8_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le8_prefix")
-            df_le8 = df[df['Prefix'] == le8_prefix]
-        with le_col2:    
-            le8_cn = st.selectbox("Number", list(df_le8["Code"]), key = "le8_cn") 
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][13] != "":
+                le7_cn = st.selectbox("Number", list(df_le7["Code"]), key = "le7_cn", index = int(list(df_le7["Code"]).index(uploaded_df["le"][14])))
+            else:
+                le7_cn = st.selectbox("Number", list(df_le7["Code"]), key = "le7_cn1")  
         
+        # Course 8
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le9_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le9_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][15] == ""):
+                le8_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le8_prefix")
+            else:
+                le8_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][15]))), placeholder = "Pick One", key = "le8_prefix1")
+            df_le8 = df[df['Prefix'] == le8_prefix]
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][15] != "":
+                le8_cn = st.selectbox("Number", list(df_le8["Code"]), key = "le8_cn", index = int(list(df_le8["Code"]).index(uploaded_df["le"][16])))
+            else:
+                le8_cn = st.selectbox("Number", list(df_le8["Code"]), key = "le8_cn1")  
+         
+        # Course 9
+        le_col1, le_col2 = st.columns(2)
+        with le_col1:
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][17] == ""):
+                le9_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le9_prefix")
+            else:
+                le9_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][17]))), placeholder = "Pick One", key = "le9_prefix1")
             df_le9 = df[df['Prefix'] == le9_prefix]
-        with le_col2:    
-            le9_cn = st.selectbox("Number", list(df_le9["Code"]), key = "le9_cn")   
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][17] != "":
+                le9_cn = st.selectbox("Number", list(df_le9["Code"]), key = "le9_cn", index = int(list(df_le9["Code"]).index(uploaded_df["le"][18])))
+            else:
+                le9_cn = st.selectbox("Number", list(df_le9["Code"]), key = "le9_cn1")
+
+        # Course 10
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le10_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le10_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][19] == ""):
+                le10_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le10_prefix")
+            else:
+                le10_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][19]))), placeholder = "Pick One", key = "le10_prefix1")
             df_le10 = df[df['Prefix'] == le10_prefix]
-        with le_col2:    
-            le10_cn = st.selectbox("Number", list(df_le10["Code"]), key = "le10_cn")  
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][19] != "":
+                le10_cn = st.selectbox("Number", list(df_le10["Code"]), key = "le10_cn", index = int(list(df_le10["Code"]).index(uploaded_df["le"][20])))
+            else:
+                le10_cn = st.selectbox("Number", list(df_le10["Code"]), key = "le10_cn1")  
+
+        # Course 11    
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le11_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le11_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][21] == ""):
+                le11_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le11_prefix")
+            else:
+                le11_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][21]))), placeholder = "Pick One", key = "le11_prefix1")
             df_le11 = df[df['Prefix'] == le11_prefix]
-        with le_col2:    
-            le11_cn = st.selectbox("Number", list(df_le11["Code"]), key = "le11_cn") 
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][21] != "":
+                le11_cn = st.selectbox("Number", list(df_le11["Code"]), key = "le11_cn", index = int(list(df_le11["Code"]).index(uploaded_df["le"][22])))
+            else:
+                le11_cn = st.selectbox("Number", list(df_le11["Code"]), key = "le11_cn1") 
+
+        # Course 12
         le_col1, le_col2 = st.columns(2)
         with le_col1:
-            le12_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le12_prefix")
+            if uploaded_file == None or (uploaded_file != None and uploaded_df["le"][23] == ""):
+                le12_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "le12_prefix")
+            else:
+                le12_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["le"][23]))), placeholder = "Pick One", key = "le12_prefix1")
             df_le12 = df[df['Prefix'] == le12_prefix]
-        with le_col2:    
-            le12_cn = st.selectbox("Number", list(df_le12["Code"]), key = "le12_cn") 
+        with le_col2:  
+            if uploaded_file != None and uploaded_df["le"][23] != "":
+                le12_cn = st.selectbox("Number", list(df_le12["Code"]), key = "le12_cn", index = int(list(df_le12["Code"]).index(uploaded_df["le"][24])))
+            else:
+                le12_cn = st.selectbox("Number", list(df_le12["Code"]), key = "le12_cn1")
 
         # Find the credit hours for each elective 
         le1_credit = df_le1[df_le1["Code"] == le1_cn]["Credit Hours:"] 
@@ -476,7 +598,7 @@ with st.expander("Elective Classes"):
                 ue1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["ue"][1]))), placeholder = "Pick One", key = "ue1_prefix1")
             df_ue1 = df[df['Prefix'] == ue1_prefix]
         with ue_col2:  
-            if uploaded_file != None and ue1_prefix == uploaded_df["ue"][1]:  
+            if uploaded_file != None and uploaded_df["ue"][2] != "":  
                 ue1_cn = st.selectbox("Number", list(df_ue1["Code"]), key = "ue1_cn", index = int(list(df_ue1["Code"]).index(uploaded_df["ue"][2])))
             else:
                 ue1_cn = st.selectbox("Number", list(df_ue1["Code"]), key = "ue1_cn1")
@@ -491,7 +613,7 @@ with st.expander("Elective Classes"):
             df_ue2 = df[df['Prefix'] == ue2_prefix]
             #st.write(df_ue2)
         with ue_col2: 
-            if uploaded_file != None and ue2_prefix == uploaded_df["ue"][3]:
+            if uploaded_file != None and uploaded_df["ue"][4] != "":
                 ue2_cn = st.selectbox("Number", list(df_ue2["Code"]), key = "ue2_cn1", index = int(list(df_ue2["Code"]).index(uploaded_df["ue"][4]))) 
             else:
                 ue2_cn = st.selectbox("Number", list(df_ue2["Code"]), key = "ue2_cn") 
@@ -530,7 +652,7 @@ with st.expander("Elective Classes"):
             df_fes1 = df[df['Prefix'] == fes1_prefix]
             #st.write(df_ue2)
         with fes_col2: 
-            if uploaded_file != None and fes1_prefix == uploaded_df["fes"][1]:
+            if uploaded_file != None and uploaded_df["fes"][2] != "":
                 fes1_cn = st.selectbox("Number", list(df_fes1["Code"]), key = "fes1_cn1", index = int(list(df_fes1["Code"]).index(uploaded_df["fes"][2]))) 
             else:
                 fes1_cn = st.selectbox("Number", list(df_fes1["Code"]), key = "fes1_cn") 
@@ -545,7 +667,7 @@ with st.expander("Elective Classes"):
             df_fes2 = df[df['Prefix'] == fes2_prefix]
             #st.write(df_ue2)
         with fes_col2: 
-            if uploaded_file != None and fes2_prefix == uploaded_df["fes"][3]:
+            if uploaded_file != None and uploaded_df["fes"][4] != "":
                 fes2_cn = st.selectbox("Number", list(df_fes2["Code"]), key = "fes2_cn1", index = int(list(df_fes2["Code"]).index(uploaded_df["fes"][4]))) 
             else:
                 fes2_cn = st.selectbox("Number", list(df_fes2["Code"]), key = "fes2_cn") 
@@ -560,7 +682,7 @@ with st.expander("Elective Classes"):
             df_fes3 = df[df['Prefix'] == fes3_prefix]
             #st.write(df_ue2)
         with fes_col2: 
-            if uploaded_file != None and fes3_prefix == uploaded_df["fes"][5]:
+            if uploaded_file != None and uploaded_df["fes"][6] != "":
                 fes3_cn = st.selectbox("Number", list(df_fes3["Code"]), key = "fes3_cn1", index = int(list(df_fes3["Code"]).index(uploaded_df["fes"][6]))) 
             else:
                 fes3_cn = st.selectbox("Number", list(df_fes3["Code"]), key = "fes3_cn") 
@@ -600,7 +722,7 @@ with st.expander("Elective Classes"):
             df_fe1 = df[df['Prefix'] == fe1_prefix]
             #st.write(df_ue2)
         with fe_col2: 
-            if uploaded_file != None and fe1_prefix == uploaded_df["fe"][1]:
+            if uploaded_file != None and uploaded_df["fe"][2] != "":
                 fe1_cn = st.selectbox("Number", list(df_fe1["Code"]), key = "fe1_cn1", index = int(list(df_fe1["Code"]).index(uploaded_df["fe"][2]))) 
             else:
                 fe1_cn = st.selectbox("Number", list(df_fe1["Code"]), key = "fe1_cn") 
@@ -615,7 +737,7 @@ with st.expander("Elective Classes"):
             df_fe2 = df[df['Prefix'] == fe2_prefix]
             #st.write(df_ue2)
         with fe_col2: 
-            if uploaded_file != None and fe2_prefix == uploaded_df["fe"][3]:
+            if uploaded_file != None and uploaded_df["fe"][4] != "":
                 fe2_cn = st.selectbox("Number", list(df_fe2["Code"]), key = "fe2_cn1", index = int(list(df_fe2["Code"]).index(uploaded_df["fe"][4]))) 
             else:
                 fe2_cn = st.selectbox("Number", list(df_fe2["Code"]), key = "fe2_cn") 
@@ -673,7 +795,7 @@ with st.expander("Analysis and Download"):
     # Creating a data frame to download
     created_data = {"comm" : [com_tc, com111z, spe321, wri121z, com_choice1, com_choice2, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "hum" : [hum_tc, hum1_prefix, hum1_cn, hum2_prefix, hum2_cn, hum3_prefix, hum3_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
-                    "ss" : [ss_tc, ss_ele1_prefix, ss_ele1_cn, ss_ele2_prefix, ss_ele2_cn, ss_ele3_prefix, ss_ele3_cn, ss_ele4_prefix, ss_ele4_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                    "ss" : [ss_tc, ss1_prefix, ss1_cn, ss2_prefix, ss2_cn, ss3_prefix, ss3_cn, ss4_prefix, ss4_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "phy" : [phy_tc, phy221, phy222, phy223, phy_ele1_prefix, phy_ele1_cn, phy_ele2_prefix, phy_ele2_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "math" : [math_tc, stat201, math251, math252, math253, math254, math310, math321, math322, math341, math346, math354, math421, math451, math_choice1, math_choice2, None, None, None, None, None, None, None, None, None],
                     "le" : [le_tc, le1_prefix, le1_cn, le2_prefix, le2_cn, le3_prefix, le3_cn, le4_prefix, le4_cn, le5_prefix, le5_cn, le6_prefix, le6_cn, le7_prefix, le7_cn, \
