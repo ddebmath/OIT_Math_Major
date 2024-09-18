@@ -897,3 +897,7 @@ with st.expander("Analysis and Download"):
     )
 
 
+# Bugs
+issue_url = "https://github.com/ddebmath/OIT_Math_Major/issues"
+st.write("For any bugs, please create an issue ticket at my [GitHub](%s)" % issue_url)
+
