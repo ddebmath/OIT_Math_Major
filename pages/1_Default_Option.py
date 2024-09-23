@@ -440,7 +440,7 @@ def math_section():
 
     # Upper div credits
     ud_credits += 4*(math310 + math321 + math322 + math341 + math346 + math354 + math421 + math451 + math465 + math_choice1_credit + math_choice2_credit)
-    st.write(ud_credits)
+    
 
 # Lower div elective
 def lower_div_section():
