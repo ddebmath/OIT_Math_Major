@@ -10,7 +10,7 @@ df = df.reset_index(drop = True)
 st.title("Math Major Advising")
 st.write("### ⬅️ Choose your math major option from the left menu")
 st.write("### 🚫 Note - Do not click on a different option while doing advising and before downloading your CSV file, as this will reset your current progress 🚫")
-st.write("### 🚫 Note - Some classes offer variable credit, and it's a little tricky to put them in code. They will show up as 0 credits when if you choose them. Use the respective Transfer Credits to add the number of credits that you would like 🚫. These classes are listed below")
+st.write("### 🚫 Note - Some classes (15 of them) offer variable credit, and it's a little tricky to put them in code. They will show up as 0 credits if you choose them. Use the respective Transfer Credits select box to add the number of credits that you would like 🚫. These 15 classes are listed below")
 
 variable_credit_classes = {"Prefix" : ["BIO", "BIO", "MIS", "MIT", "PHM", "PWR", "PWR", "ABA", "PSY", "CST", "BIO", "CHE", "CE", "ENV", "BIO"],
                            "Course Number" : [597, 595, 107, 407, 420, 490, 499, 599, 447, 490, 495, 495, 595, 420, 302]}
