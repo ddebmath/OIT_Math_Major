@@ -130,7 +130,7 @@ def comm_section():
 
     # Find number of upper division credits
     ud_credits += 3*spe321 + com_choice2_credit
-    st.write(ud_credits)
+    
 
 # Humanities section
 def hum_section():
