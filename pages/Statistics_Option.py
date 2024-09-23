@@ -2,11 +2,14 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-st.set_page_config(page_title = "Math Major", layout = "wide")
-st.title("Math Major Advising")
+st.set_page_config(page_title = "Math Major - Statistics Option", layout = "wide")
+st.title("Statistics Option")
 # Load the course list csv file
-df = pd.read_csv("course_list_utf.csv")
+df = pd.read_csv("pages/course_list_utf.csv")
 cp = df['Prefix'].unique()
+
+# Upper div credits
+ud_credits = 0
 
 # Default df if no file is uploaded
 default_data = {"comm" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
@@ -14,10 +17,10 @@ default_data = {"comm" : [None, None, None, None, None, None, None, None, None, 
                 "ss" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                 "phy" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                 "math" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                "or" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                "senseq" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                "oe" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                 "le" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
-                "ue" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
-                "fes" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
-                "fe" : [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                 "details" : ["Default", None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]}
 
 # Upload file    
@@ -31,16 +34,23 @@ else:
 uploaded_df.fillna("", inplace=True)
 #st.write(uploaded_df)
 
-col1, col2 = st.columns(2)
-with col1:
-    math_options = ["Default", "Physics", "Computational Mathematics", "Statistics"]
-    option_selected = st.selectbox("Choose your math option", math_options, index = math_options.index(uploaded_df["details"][0]))
-    st.write("## You have chosen " + option_selected + " option")
-with col2:
-    if uploaded_df["details"][1] == "":
-        student_name = st.text_input("Student Name (optional):")
-    else:
-        student_name = st.text_input("Student Name (optional):", uploaded_df["details"][1])    
+if uploaded_df["details"][1] == "":
+    student_name = st.text_input("Student Name (optional):")
+else:
+    student_name = st.text_input("Student Name (optional):", uploaded_df["details"][1])   
+
+option_selected = "Statistics"
+
+# col1, col2 = st.columns(2)
+# with col1:
+#     math_options = ["Default", "Physics", "Computational Mathematics", "Statistics"]
+#     option_selected = st.selectbox("Choose your math option", math_options, index = math_options.index(uploaded_df["details"][0]))
+#     st.write("## You have chosen " + option_selected + " option")
+# with col2:
+#     if uploaded_df["details"][1] == "":
+#         student_name = st.text_input("Student Name (optional):")
+#     else:
+#         student_name = st.text_input("Student Name (optional):", uploaded_df["details"][1])    
 
 # Get all the data
 com_tc = None if uploaded_df["comm"][0] == "" else uploaded_df["comm"][0]
@@ -48,18 +58,19 @@ hum_tc = None if uploaded_df["hum"][0] == "" else uploaded_df["hum"][0]
 ss_tc = None if uploaded_df["ss"][0] == "" else uploaded_df["ss"][0]
 phy_tc = None if uploaded_df["phy"][0] == "" else uploaded_df["phy"][0]
 math_tc = None if uploaded_df["math"][0] == "" else uploaded_df["math"][0]
-le_tc = None if uploaded_df["le"][0] == "" else uploaded_df["le"][0]
-ue_tc = None if uploaded_df["ue"][0] == "" else uploaded_df["ue"][0]
-fes_tc = None if uploaded_df["fes"][0] == "" else uploaded_df["fes"][0]
-fe_tc = None if uploaded_df["fe"][0] == "" else uploaded_df["fe"][0]
+le_tc = None if uploaded_df["or"][0] == "" else uploaded_df["or"][0]
+senseq_tc = None if uploaded_df["senseq"][0] == "" else uploaded_df["senseq"][0]
+oe_tc = None if uploaded_df["oe"][0] == "" else uploaded_df["oe"][0]
+fe_tc = None if uploaded_df["le"][0] == "" else uploaded_df["le"][0]
 
 # Check boxes
 com111z_value = True if uploaded_df["comm"][1] == "True" else False
 spe321_value = True if uploaded_df["comm"][2] == "True" else False
 wri121z_value = True if uploaded_df["comm"][3] == "True" else False
+
 phy221_value = True if uploaded_df["phy"][1] == "True" else False
 phy222_value = True if uploaded_df["phy"][2] == "True" else False
-phy223_value = True if uploaded_df["phy"][3] == "True" else False
+
 stat201_value = True if uploaded_df["math"][1] == "True" else False
 math251_value = True if uploaded_df["math"][2] == "True" else False
 math252_value = True if uploaded_df["math"][3] == "True" else False
@@ -76,10 +87,21 @@ math451_value = True if uploaded_df["math"][13] == "True" else False
 math465_value = True if uploaded_df["math"][14] == "True" else False
 
 
+math342_value = True if uploaded_df["or"][1] == "True" else False
+math361_value = True if uploaded_df["or"][2] == "True" else False
+math362_value = True if uploaded_df["or"][3] == "True" else False
+
+stat211_value = True if uploaded_df["oe"][1] == "True" else False
+stat405_value = True if uploaded_df["oe"][2] == "True" else False
+math407_value = True if uploaded_df["oe"][3] == "True" else False
+stat412_value = True if uploaded_df["oe"][4] == "True" else False
+stat414_value = True if uploaded_df["oe"][5] == "True" else False
+stat441_value = True if uploaded_df["oe"][6] == "True" else False
+stat442_value = True if uploaded_df["oe"][7] == "True" else False
 
 # Comm section
 def comm_section():
-    global com_tc, com_credits, com111z, spe321, wri121z, com_choice1, com_choice2
+    global com_tc, com_credits, com111z, spe321, wri121z, com_choice1, com1_prefix, com1_cn, ud_credits
 
     st.write("### Communication (18 Credits)")
     if uploaded_file == None:
@@ -91,33 +113,53 @@ def comm_section():
     spe321 = st.checkbox("SPE 321 - Small Group/Team Comm Credits", value = spe321_value)
     wri121z = st.checkbox("WRI 121Z - Composition I", value = wri121z_value) 
 
+    st.write("Communication Elective 1")
+    com_col1, com_col2 = st.columns(2)
+    with com_col1:
+        if uploaded_file == None or (uploaded_file != None and uploaded_df["comm"][4] == ""):
+            com1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "com1_prefix")
+        else:
+            com1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["comm"][4]))), placeholder = "Pick One", key = "com1_prefix1")
+        df_com1 = df[df['Prefix'] == com1_prefix]
+    with com_col2:  
+        if uploaded_file != None and uploaded_df["comm"][5] != "":  
+            com1_cn = st.selectbox("Number", list(df_com1["Code"]), key = "com1_cn", index = int(list(df_com1["Code"]).index(uploaded_df["comm"][5])))
+        else:
+            com1_cn = st.selectbox("Number", list(df_com1["Code"]), key = "com1_cn1")
+
     # Find comm choice value
-    if uploaded_df["comm"][4] == "":
+    if uploaded_df["comm"][6] == "":
         com_choice1_index = None
     else:
-        com_choice1_index = ["Choose No Class", "WRI 122Z - Composition II", "WRI 227Z - Technical Writing"].index(uploaded_df["comm"][4])
-    if uploaded_df["comm"][5] == "":
-        com_choice2_index = None
-    else:
-        com_choice2_index = ["Choose No Class", "WRI 327 - Advanced Tech Writing", "WRI 350 - Documentation Development"].index(uploaded_df["comm"][5])
+        com_choice1_index = ["Choose No Class", "WRI 122Z - Composition II", "WRI 227Z - Technical Writing"].index(uploaded_df["comm"][6])
+
 
     com_choice1 = st.selectbox("Choose one class", ["Choose No Class", "WRI 122Z - Composition II", "WRI 227Z - Technical Writing"], index = com_choice1_index, placeholder = "Pick One")
-    com_choice2 = st.selectbox("Choose one class", ["Choose No Class", "WRI 327 - Advanced Tech Writing", "WRI 350 - Documentation Development"], index = None, placeholder = "Pick One")
+    #com_choice2 = st.selectbox("Choose one class", ["Choose No Class", "WRI 327 - Advanced Tech Writing", "WRI 350 - Documentation Development"], index = None, placeholder = "Pick One")
     
     if com_choice1 == None or com_choice1 == "Choose No Class":
         com_choice1_credit = 0
     else:
         com_choice1_credit = 4
-    if com_choice2 == None or com_choice2 == "Choose No Class":
-        com_choice2_credit = 0
-    else:
-        com_choice2_credit = 3
-    com_credits = com_tc + 4*com111z + 3*spe321 + 4*wri121z + com_choice1_credit + com_choice2_credit
+
+    # Find the credit hours for each elective 
+    com1_credit = df_com1[df_com1["Code"] == com1_cn]["Credit Hours:"]
+    # This is if nothing is chosen then the credits defaults to 0
+    if com1_prefix == None or com1_cn == None:
+        com1_credit = 0
+
+    com_credits = com_tc + 4*com111z + 3*spe321 + 4*wri121z + int(com1_credit) + com_choice1_credit
     st.write("###### :green[Total Communication Credits:] " + str(f":green[{com_credits}]"))
+
+    # Find number of upper division credits
+    ud_credits += 3*spe321
+    if com1_cn != None:
+        if int(''.join(filter(str.isdigit, com1_cn))) >= 300:
+            ud_credits += int(com1_credit)
 
 # Humanities section
 def hum_section():
-    global hum_tc, hum_credits, hum1_prefix, hum1_cn, hum2_prefix, hum2_cn, hum3_prefix, hum3_cn
+    global hum_tc, hum_credits, hum1_prefix, hum1_cn, hum2_prefix, hum2_cn, hum3_prefix, hum3_cn, ud_credits
     st.write("### Humanities (9 Credits)")
     if uploaded_file == None:
         hum_tc = st.selectbox("Humanities Transfer Credits", list(range(0, 76)))
@@ -185,10 +227,22 @@ def hum_section():
     hum_credits = hum_tc + int(hum1_credit) + int(hum2_credit) + int(hum3_credit)
     st.write("###### :green[Total Humanities Credits:] " + str(f":green[{hum_credits}]"))
 
+    # Find number of upper division credits
+    #st.write(hum1_cn)
+    if hum1_cn != None:
+        if int(''.join(filter(str.isdigit, hum1_cn))) >= 300:
+            ud_credits += int(hum1_credit)
+    if hum2_cn != None:
+        if int(''.join(filter(str.isdigit, hum2_cn))) >= 300:
+            ud_credits += int(hum2_credit)
+    if hum3_cn != None:
+        if int(''.join(filter(str.isdigit, hum3_cn))) >= 300:
+            ud_credits += int(hum3_credit)
+
 
 # Social Science section
 def ss_section():
-    global ss_tc, ss_credits, ss1_prefix, ss1_cn, ss2_prefix, ss2_cn, ss3_prefix, ss3_cn, ss4_prefix, ss4_cn
+    global ss_tc, ss_credits, ss1_prefix, ss1_cn, ss2_prefix, ss2_cn, ss3_prefix, ss3_cn, ss4_prefix, ss4_cn, ud_credits
     st.write("### Social Science (12 Credits)")
     if uploaded_file == None:
         ss_tc = st.selectbox("Social Science Transfer Credits", list(range(0, 76)))
@@ -274,117 +328,169 @@ def ss_section():
     ss_credits = ss_tc + int(ss1_credit) + int(ss2_credit) + int(ss3_credit) + int(ss4_credit)
     st.write("###### :green[Total Social Science Credits:] " + str(f":green[{ss_credits}]"))
 
-# Physics option
+    # Find number of upper division credits
+    #st.write(hum1_cn)
+    if ss1_cn != None:
+        if int(''.join(filter(str.isdigit, ss1_cn))) >= 300:
+            ud_credits += int(ss1_credit)
+    if ss2_cn != None:
+        if int(''.join(filter(str.isdigit, ss2_cn))) >= 300:
+            ud_credits += int(ss2_credit)
+    if ss3_cn != None:
+        if int(''.join(filter(str.isdigit, ss3_cn))) >= 300:
+            ud_credits += int(ss3_credit)
+    if ss4_cn != None:
+        if int(''.join(filter(str.isdigit, ss4_cn))) >= 300:
+            ud_credits += int(ss4_credit)
+
+# Physics section
 def phy_section():
-    global phy_tc, phy_credits, phy221, phy222, phy223, phy1_prefix, phy1_cn, phy2_prefix, phy2_cn
-    st.write("### Physics (19 Credits)")
+    global phy_tc, phy_credits, phy221, phy222
+    st.write("### Physics (8 Credits)")
     if uploaded_file == None:
         phy_tc = st.selectbox("Physics Transfer Credits", list(range(0, 76)))
     else:
         phy_tc = st.selectbox("Physics Transfer Credits", list(range(0, 76)), index=int(uploaded_df["phy"][0]))
     phy221 = st.checkbox("PHY 221 - General Physics with Calculus I", value = phy221_value) 
     phy222 = st.checkbox("PHY 222 - General Physics with Calculus II", value = phy222_value)
-    phy223 = st.checkbox("PHY 223 - General Physics with Calculus III", value = phy223_value) 
+     
 
-    # Math/Physics Elective
-    st.write("Math/Physics Elective 1")
-    phy_col1, phy_col2 = st.columns(2)
-    with phy_col1:
-        if uploaded_file == None or (uploaded_file != None and uploaded_df["phy"][4] == ""):
-            phy1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "phy1_prefix")
-        else:
-            phy1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["phy"][4]))), placeholder = "Pick One", key = "phy1_prefix1")
-        df_phy1 = df[df['Prefix'] == phy1_prefix]
-    with phy_col2:  
-        if uploaded_file != None and uploaded_df["phy"][5] != "":
-            phy1_cn = st.selectbox("Number", list(df_phy1["Code"]), key = "phy1_cn", index = int(list(df_phy1["Code"]).index(uploaded_df["phy"][5])))
-        else:
-            phy1_cn = st.selectbox("Number", list(df_phy1["Code"]), key = "phy1_cn1")
-        
-    st.write("Math/Physics Elective 2")
-    phy_col1, phy_col2 = st.columns(2)
-    with phy_col1:
-        if uploaded_file == None or (uploaded_file != None and uploaded_df["phy"][6] == ""):
-            phy2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "phy2_prefix")
-        else:
-            phy2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["phy"][6]))), placeholder = "Pick One", key = "phy2_prefix1")
-        df_phy2 = df[df['Prefix'] == phy2_prefix]
-    with phy_col2:  
-        if uploaded_file != None and uploaded_df["phy"][7] != "":
-            phy2_cn = st.selectbox("Number", list(df_phy2["Code"]), key = "phy2_cn", index = int(list(df_phy2["Code"]).index(uploaded_df["phy"][7])))
-        else:
-            phy2_cn = st.selectbox("Number", list(df_phy2["Code"]), key = "phy2_cn1")
-    
-    # Find the credit hours for each elective 
-    phy1_credit = df_phy1[df_phy1["Code"] == phy1_cn]["Credit Hours:"]
-    phy2_credit = df_phy2[df_phy2["Code"] == phy2_cn]["Credit Hours:"]      
-
-    # This is if nothing is chosen then the credits defaults to 0
-    if phy1_prefix == None or phy1_cn == None:
-        phy1_credit = 0
-    if phy2_prefix == None or phy2_cn == None:
-        phy2_credit = 0
-
-    phy_credits = phy_tc + 4*phy221 + 4*phy222 + 4*phy223 + int(phy1_credit) + int(phy2_credit)
+    phy_credits = phy_tc + 4*phy221 + 4*phy222 
     st.write("###### :green[Total Physics Credits:] " + str(f":green[{phy_credits}]"))
 
 
 # Core math section
 def math_section():
-    global math_tc, math_credits, stat201, math251, math252, math253, math254, math310, math321, math322, math341, math346, math354, math421, math451, math465, math_choice1, math_choice2
-    st.write("### Mathematics (64 Credits)")
+    global math_tc, math_credits, stat201, math251, math252, math253, math254, math310, math321, math322, math341, math346, math354, math421, math451, math465, ud_credits
+    st.write("### Mathematics (56 Credits)")
     if uploaded_file == None:
         math_tc = st.selectbox("Mathematics Transfer Credits", list(range(0, 76)))
     else:
         math_tc = st.selectbox("Mathematics Transfer Credits", list(range(0, 76)), index=int(uploaded_df["math"][0]))
-    stat201 = st.checkbox("STAT 201 - Intro to Data Science", value = stat201_value) 
-    math251 = st.checkbox("MATH 251 - Differential Calculus", value = math251_value)
-    math252 = st.checkbox("MATH 252 - Integral Calculus", value = math252_value) 
-    math253 = st.checkbox("MATH 253 - Sequences and Series", value = math253_value)
-    math254 = st.checkbox("MATH 254 - Vector Calculus I", value = math254_value) 
-    math310 = st.checkbox("MATH 310 - Mathematical Structures", value = math310_value)
-    math321 = st.checkbox("MATH 321 - Applied Differential Equations I", value = math321_value) 
-    math322 = st.checkbox("MATH 322 - Applied Differential Equations II", value = math322_value) 
-    math341 = st.checkbox("MATH 341 - Linear Algebra I", value = math341_value)  
-    math346 = st.checkbox("MATH 346 - Number Theory", value = math346_value) 
-    math354 = st.checkbox("MATH 354 - Vector Calculus II", value = math354_value) 
-    math421 = st.checkbox("MATH 421 - Applied Partial Differential Equations I", value = math421_value)
-    math451 = st.checkbox("MATH 451 - Applied Numerical Methods I", value = math451_value)
-    math465 = st.checkbox("MATH 465 - Mathematical Statistics", value = math465_value)
+    ld_math_col, ud_math_col = st.columns(2)
+    with ld_math_col:
+        st.write("#### Lower Division Math (20 credits)")
+        stat201 = st.checkbox("STAT 201 - Intro to Data Science", value = stat201_value) 
+        math251 = st.checkbox("MATH 251 - Differential Calculus", value = math251_value)
+        math252 = st.checkbox("MATH 252 - Integral Calculus", value = math252_value) 
+        math253 = st.checkbox("MATH 253 - Sequences and Series", value = math253_value)
+        math254 = st.checkbox("MATH 254 - Vector Calculus I", value = math254_value) 
+    with ud_math_col:
+        st.write("#### Upper Division Math (36 credits)")
+        math310 = st.checkbox("MATH 310 - Mathematical Structures", value = math310_value)
+        math321 = st.checkbox("MATH 321 - Applied Differential Equations I", value = math321_value) 
+        math322 = st.checkbox("MATH 322 - Applied Differential Equations II", value = math322_value) 
+        math341 = st.checkbox("MATH 341 - Linear Algebra I", value = math341_value)  
+        math346 = st.checkbox("MATH 346 - Number Theory", value = math346_value) 
+        math354 = st.checkbox("MATH 354 - Vector Calculus II", value = math354_value) 
+        math421 = st.checkbox("MATH 421 - Applied Partial Differential Equations I", value = math421_value)
+        math451 = st.checkbox("MATH 451 - Numerical Methods I", value = math451_value)
+        math465 = st.checkbox("MATH 465 - Mathematical Statistics", value = math465_value)
+
+    
+    math_credits = math_tc + 4*(stat201 + math251 + math252 + math253 + math254 + math310 + math321 + math322 + math341 + math346 + math354 + math421 + math451 + math465)
+    st.write("###### :green[Total Core Mathematics Credits:] " + str(f":green[{math_credits}]"))
+
+    # Upper div credits
+    ud_credits += 4*(math310 + math321 + math322 + math341 + math346 + math354 + math421 + math451 + math465)
+
+
+# Required classes
+def option_req_section():
+    global or_tc, or_credits, math342, math361, math362, ud_credits
+    
+    st.write("### Option Specific Classes (Required) (12 Credits)")
+    if uploaded_file == None:
+        or_tc = st.selectbox("Option Specific Classes (Required) Transfer Credits", list(range(0, 76)))
+    else:
+        or_tc = st.selectbox("Option Specific Classes (Required) Transfer Credits", list(range(0, 76)), index=int(uploaded_df["or"][0]))
+    st.write("Specific Required Classes")
+    # Req classes
+    math342 = st.checkbox("MATH 342 - Linear Algebra II", value = math342_value)
+    math361 = st.checkbox("MATH 361 - Mathematical Statistics I", value = math361_value)
+    math362 = st.checkbox("MATH 362 - Mathematical Statistics I", value = math362_value)
+            
+    or_credits = or_tc + 4*(math342 + math361 + math362)
+    st.write("###### :green[Total Option Specific Classes (Required) Credits:] " + str(f":green[{or_credits}]"))
+
+    # Upper div credits
+    ud_credits += 4*(math342 + math361 + math362)
+
+def senior_seq_section():
+    # Senior Sequence
+    global senseq_tc, senseq_credits, senseq_choice1, senseq_choice2, ud_credits
+    st.write("### Senior Sequence/Project (8 Credits)")
+    #st.write(uploaded_df)
+    if uploaded_file == None:
+        senseq_tc = st.selectbox("Senior Sequence/Project Transfer Credits", list(range(0, 76)))
+    else:
+        senseq_tc = st.selectbox("Senior Sequence/Project Transfer Credits", list(range(0, 76)), index=int(uploaded_df["senseq"][0]))
 
     # Find math choice value
     
-    if uploaded_df["math"][15] == "":
-        math_choice1_index = None
+    if uploaded_df["senseq"][1] == "":
+        senseq_choice1_index = None
+        senseq_choice1 = st.selectbox("Choose one class", ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Numerical Methods II", "MATH 453 - Numerical Methods III"], index = senseq_choice1_index, placeholder = "Pick One", key = "senseq_choice11")
     else:
-        math_choice1_index = ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Applied Numerical Methods II", "MATH 453 - Applied Numerical Methods III"].index(uploaded_df["math"][15])
+        senseq_choice1_index = ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Numerical Methods II", "MATH 453 - Numerical Methods III"].index(uploaded_df["senseq"][1])
+        senseq_choice1 = st.selectbox("Choose one class", ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Numerical Methods II", "MATH 453 - Numerical Methods III"], index = int(senseq_choice1_index), placeholder = "Pick One", key = "senseq_choice111")
    
-    if uploaded_df["math"][16] == "":
-        math_choice2_index = None
+    if uploaded_df["senseq"][2] == "":
+        senseq_choice2_index = None
+        senseq_choice2 = st.selectbox("Choose one class", ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Numerical Methods II", "MATH 453 - Numerical Methods III"], index = senseq_choice2_index, placeholder = "Pick One", key = "senseq_choice12")
     else:
-        math_choice2_index = ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Applied Numerical Methods II", "MATH 453 - Applied Numerical Methods III"].index(uploaded_df["math"][16])
-    
-    math_choice1 = st.selectbox("Choose one class", ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Applied Numerical Methods II", "MATH 453 - Applied Numerical Methods III"], index = math_choice1_index, placeholder = "Pick One", key = "math_choice1")
-    math_choice2 = st.selectbox("Choose one class", ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Applied Numerical Methods II", "MATH 453 - Applied Numerical Methods III"], index = math_choice2_index, placeholder = "Pick One", key = "math_choice2")
+        senseq_choice2_index = ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Numerical Methods II", "MATH 453 - Numerical Methods III"].index(uploaded_df["senseq"][2])
+        senseq_choice2 = st.selectbox("Choose one class", ["Choose No Class", "MATH 422 - Applied Partial Differential Equations II", "MATH 423 - Applied Partial Differential Equations III", "MATH 452 - Numerical Methods II", "MATH 453 - Numerical Methods III"], index = int(senseq_choice2_index), placeholder = "Pick One", key = "senseq_choice121")
 
-    if math_choice1 == None or math_choice1 == "Choose No Class":
-        math_choice1_credit = 0
+    if senseq_choice1 == None or senseq_choice1 == "Choose No Class":
+        senseq_choice1_credit = 0
     else:
-        math_choice1_credit = 1
-    if math_choice2 == None or math_choice2 == "Choose No Class":
-        math_choice2_credit = 0
+        senseq_choice1_credit = 1
+    if senseq_choice2 == None or senseq_choice2 == "Choose No Class":
+        senseq_choice2_credit = 0
     else:
-        math_choice2_credit = 1
-    math_credits = math_tc + 4*(stat201 + math251 + math252 + math253 + math254 + math310 + math321 + math322 + math341 + math346 + math354 + math421 + math451 + math465 + math_choice1_credit + math_choice2_credit)
-    st.write("###### :green[Total Core Mathematics Credits:] " + str(f":green[{math_credits}]"))
+        senseq_choice2_credit = 1
+
+    senseq_credits = senseq_tc + 4*int(senseq_choice1_credit) + 4*int(senseq_choice2_credit)
+    st.write("###### :green[Senior Sequence/Project Credits:] " + str(f":green[{senseq_credits}]"))
+
+    # Upper div credits
+    ud_credits += 4*int(senseq_choice1_credit) + 4*int(senseq_choice2_credit)
 
 
-# Lower div elective
-def lower_div_section():
+def option_elec_section():
+    global oe_tc, oe_credits, stat211, stat405, math407, stat412, stat414, stat441, stat442, ud_credits
+    st.write("### Option Specfic (Elective) (12 Credits)")
+    if uploaded_file == None:
+        oe_tc = st.selectbox("Option Specfic (Elective) Transfer Credits", list(range(0, 76)))
+    else:
+        oe_tc = st.selectbox("Option Specfic (Elective) Transfer Credits", list(range(0, 76)), index=int(uploaded_df["oe"][0]))
+    st.write("Specific Elective Classes (At least one 300+ class)")
+
+    # Elective classes
+    stat211 = st.checkbox("STAT 211 - Data Science Methods", value = stat211_value)
+    stat405 = st.checkbox("STAT 405 - Advanced Methods in Data Science", value = stat405_value)
+    math407 = st.checkbox("MATH 407 - Seminar", value = math407_value) 
+    stat412 = st.checkbox("STAT 412 - Regression & Times Series", value = stat412_value)
+    stat414 = st.checkbox("STAT 414 - Stat Methods in Epidemiology", value = stat414_value)
+    stat441 = st.checkbox("STAT 441 - Statistical Machine Learning I", value = stat441_value)
+    stat442 = st.checkbox("STAT 442 - Statistical Machine Learning II", value = stat442_value)
+
+
+
+    oe_credits = oe_tc + 4*(stat211 + stat405 + stat412 + stat414 + stat441 + stat442) + 6*math407
+    st.write("###### :green[Total Focused Elective Sequence Credits:] " + str(f":green[{oe_credits}]"))
+
+    # Upper div credits
+    ud_credits += 4*(stat211 + stat405 + stat412 + stat414 + stat441 + stat442) + 6*math407
+
+
+# Focused elective seq
+def free_ele_section():
     global le_tc, le_credits, le1_prefix, le1_cn, le2_prefix, le2_cn, le3_prefix, le3_cn, le4_prefix, le4_cn, le5_prefix, le5_cn, le6_prefix, le6_cn, le7_prefix, le7_cn, le8_prefix, le8_cn, le9_prefix, le9_cn, le10_prefix, le10_cn, \
-            le11_prefix, le11_cn, le12_prefix, le12_cn
+            le11_prefix, le11_cn, ud_credits
      # Lower div elective
-    st.write("### Lower Division Electives (35 Credits)")
+    st.write("### Lower Division Electives (45 Credits)")
     if uploaded_file == None:
         le_tc = st.selectbox("Lower Division Electives Transfer Credits", list(range(0, 76)))
     else:
@@ -543,8 +649,8 @@ def lower_div_section():
         if uploaded_file != None and uploaded_df["le"][22] != "":
             le11_cn = st.selectbox("Number", list(df_le11["Code"]), key = "le11_cn", index = int(list(df_le11["Code"]).index(uploaded_df["le"][22])))
         else:
-            le11_cn = st.selectbox("Number", list(df_le11["Code"]), key = "le11_cn1") 
-
+            le11_cn = st.selectbox("Number", list(df_le11["Code"]), key = "le11_cn1")  
+    
     # Course 12
     le_col1, le_col2 = st.columns(2)
     with le_col1:
@@ -598,190 +704,51 @@ def lower_div_section():
         le11_credit = 0
     if le12_prefix == None or le12_cn == None:
         le12_credit = 0
-    
+
     le_credits = le_tc + int(le1_credit) + int(le2_credit) + int(le3_credit) + int(le4_credit) + int(le5_credit) + int(le6_credit) + int(le7_credit) + int(le8_credit) + int(le9_credit) + int(le10_credit) + int(le11_credit) + int(le12_credit)
-    st.write("###### :green[Total Lower Division Elective Credits:] " + str(f":green[{le_credits}]"))
+    st.write("###### :green[Free Elective Credits:] " + str(f":green[{le_credits}]"))
 
-def upper_div_section():
-    # Upper div electives
-    global ue_tc, ue_credits, ue1_prefix, ue1_cn, ue2_prefix, ue2_cn
-    st.write("### Upper Division Electives (7 Credits)")
-    #st.write(uploaded_df)
-    if uploaded_file == None:
-        ue_tc = st.selectbox("Upper Division Electives Transfer Credits", list(range(0, 76)))
-    else:
-        ue_tc = st.selectbox("Upper Division Electives Transfer Credits", list(range(0, 76)), index=int(uploaded_df["ue"][0]))
-    st.write("Specific Elective Classes")
-
-    # Class 1
-    ue_col1, ue_col2 = st.columns(2)
-    with ue_col1:
-        if uploaded_file == None or (uploaded_file != None and uploaded_df["ue"][1] == ""):
-            ue1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "ue1_prefix")
-        else:
-            ue1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["ue"][1]))), placeholder = "Pick One", key = "ue1_prefix1")
-        df_ue1 = df[df['Prefix'] == ue1_prefix]
-    with ue_col2:  
-        if uploaded_file != None and uploaded_df["ue"][2] != "":  
-            ue1_cn = st.selectbox("Number", list(df_ue1["Code"]), key = "ue1_cn", index = int(list(df_ue1["Code"]).index(uploaded_df["ue"][2])))
-        else:
-            ue1_cn = st.selectbox("Number", list(df_ue1["Code"]), key = "ue1_cn1")
-    
-    # Class 2
-    ue_col1, ue_col2 = st.columns(2)
-    with ue_col1:
-        if uploaded_file == None or (uploaded_file != None and uploaded_df["ue"][3] == ""):
-            ue2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "ue2_prefix")
-        else:
-            ue2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["ue"][3]))), placeholder = "Pick One", key = "ue2_prefix1")
-        df_ue2 = df[df['Prefix'] == ue2_prefix]
-        #st.write(df_ue2)
-    with ue_col2: 
-        if uploaded_file != None and uploaded_df["ue"][4] != "":
-            ue2_cn = st.selectbox("Number", list(df_ue2["Code"]), key = "ue2_cn1", index = int(list(df_ue2["Code"]).index(uploaded_df["ue"][4]))) 
-        else:
-            ue2_cn = st.selectbox("Number", list(df_ue2["Code"]), key = "ue2_cn") 
-
-
-    # Find the credit hours for each elective 
-    ue1_credit = df_ue1[df_ue1["Code"] == ue1_cn]["Credit Hours:"] 
-    ue2_credit = df_ue2[df_ue2["Code"] == ue2_cn]["Credit Hours:"]
-
-    if ue1_prefix == None or ue1_cn == None:
-        ue1_credit = 0
-    if ue2_prefix == None or ue2_cn == None:
-        ue2_credit = 0
-
-    ue_credits = ue_tc + int(ue1_credit) + int(ue2_credit)
-    st.write("###### :green[Total Upper Division Elective Credits:] " + str(f":green[{ue_credits}]"))
-
-
-def focused_elec_seq_section():
-    global fes_tc, fes_credits, fes1_prefix, fes1_cn, fes2_prefix, fes2_cn, fes3_prefix, fes3_cn
-    st.write("### Focused Elective Sequence (9 Credits)")
-    if uploaded_file == None:
-        fes_tc = st.selectbox("Focused Elective Sequence Transfer Credits", list(range(0, 76)))
-    else:
-        fes_tc = st.selectbox("Focused Elective Sequence Transfer Credits", list(range(0, 76)), index=int(uploaded_df["fes"][0]))
-    st.write("Specific Elective Classes")
-
-    # Class 1
-    fes_col1, fes_col2 = st.columns(2)
-    with fes_col1:
-        if uploaded_file == None or (uploaded_file != None and uploaded_df["fes"][1] == ""):
-            fes1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "fes1_prefix")
-        else:
-            fes1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["fes"][1]))), placeholder = "Pick One", key = "fes1_prefix1")
-        df_fes1 = df[df['Prefix'] == fes1_prefix]
-        #st.write(df_ue2)
-    with fes_col2: 
-        if uploaded_file != None and uploaded_df["fes"][2] != "":
-            fes1_cn = st.selectbox("Number", list(df_fes1["Code"]), key = "fes1_cn1", index = int(list(df_fes1["Code"]).index(uploaded_df["fes"][2]))) 
-        else:
-            fes1_cn = st.selectbox("Number", list(df_fes1["Code"]), key = "fes1_cn") 
-
-    # Class 2    
-    fes_col1, fes_col2 = st.columns(2)
-    with fes_col1:
-        if uploaded_file == None or (uploaded_file != None and uploaded_df["fes"][3] == ""):
-            fes2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "fes2_prefix")
-        else:
-            fes2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["fes"][3]))), placeholder = "Pick One", key = "fes2_prefix1")
-        df_fes2 = df[df['Prefix'] == fes2_prefix]
-        #st.write(df_ue2)
-    with fes_col2: 
-        if uploaded_file != None and uploaded_df["fes"][4] != "":
-            fes2_cn = st.selectbox("Number", list(df_fes2["Code"]), key = "fes2_cn1", index = int(list(df_fes2["Code"]).index(uploaded_df["fes"][4]))) 
-        else:
-            fes2_cn = st.selectbox("Number", list(df_fes2["Code"]), key = "fes2_cn") 
-    
-    # Class 3
-    fes_col1, fes_col2 = st.columns(2)
-    with fes_col1:
-        if uploaded_file == None or (uploaded_file != None and uploaded_df["fes"][5] == ""):
-            fes3_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "fes3_prefix")
-        else:
-            fes3_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["fes"][5]))), placeholder = "Pick One", key = "fes3_prefix1")
-        df_fes3 = df[df['Prefix'] == fes3_prefix]
-        #st.write(df_ue2)
-    with fes_col2: 
-        if uploaded_file != None and uploaded_df["fes"][6] != "":
-            fes3_cn = st.selectbox("Number", list(df_fes3["Code"]), key = "fes3_cn1", index = int(list(df_fes3["Code"]).index(uploaded_df["fes"][6]))) 
-        else:
-            fes3_cn = st.selectbox("Number", list(df_fes3["Code"]), key = "fes3_cn") 
-
-    # Find the credit hours for each elective 
-    fes1_credit = df_fes1[df_fes1["Code"] == fes1_cn]["Credit Hours:"]
-    fes2_credit = df_fes2[df_fes2["Code"] == fes2_cn]["Credit Hours:"]
-    fes3_credit = df_fes3[df_fes3["Code"] == fes3_cn]["Credit Hours:"]
-
-    # This is if nothing is chosen then the credits defaults to 0
-    if fes1_prefix == None or fes1_cn == None:
-        fes1_credit = 0
-    if fes2_prefix == None or fes2_cn == None:
-        fes2_credit = 0
-    if fes3_prefix == None or fes3_cn == None:
-        fes3_credit = 0
-
-    fes_credits = fes_tc + int(fes1_credit) + int(fes2_credit) + int(fes3_credit)
-    st.write("###### :green[Total Focused Elective Sequence Credits:] " + str(f":green[{fes_credits}]"))
-
-# Focused elective seq
-def focused_ele_section():
-    global fe_tc, fe_credits, fe1_prefix, fe1_cn, fe2_prefix, fe2_cn
-    st.write("### Focused Electives (7 Credits)")
-    if uploaded_file == None:
-        fe_tc = st.selectbox("Focused Elective Transfer Credits", list(range(0, 76)))
-    else:
-        fe_tc = st.selectbox("Focused Elective Transfer Credits", list(range(0, 76)), index=int(uploaded_df["fe"][0]))
-    st.write("Specific Elective Classes")
-
-    # Class 1
-    fe_col1, fe_col2 = st.columns(2)
-    with fe_col1:
-        if uploaded_file == None or (uploaded_file != None and uploaded_df["fe"][1] == ""):
-            fe1_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "fe1_prefix")
-        else:
-            fe1_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["fe"][1]))), placeholder = "Pick One", key = "fe1_prefix1")
-        df_fe1 = df[df['Prefix'] == fe1_prefix]
-        #st.write(df_ue2)
-    with fe_col2: 
-        if uploaded_file != None and uploaded_df["fe"][2] != "":
-            fe1_cn = st.selectbox("Number", list(df_fe1["Code"]), key = "fe1_cn1", index = int(list(df_fe1["Code"]).index(uploaded_df["fe"][2]))) 
-        else:
-            fe1_cn = st.selectbox("Number", list(df_fe1["Code"]), key = "fe1_cn") 
-
-    # Class 2
-    fe_col1, fe_col2 = st.columns(2)
-    with fe_col1:
-        if uploaded_file == None or (uploaded_file != None and uploaded_df["fe"][3] == ""):
-            fe2_prefix = st.selectbox("Prefix", list(cp), index = None, placeholder = "Pick One", key = "fe2_prefix")
-        else:
-            fe2_prefix = st.selectbox("Prefix", list(cp), index = int(list(cp).index(str(uploaded_df["fe"][3]))), placeholder = "Pick One", key = "fe2_prefix1")
-        df_fe2 = df[df['Prefix'] == fe2_prefix]
-        #st.write(df_ue2)
-    with fe_col2: 
-        if uploaded_file != None and uploaded_df["fe"][4] != "":
-            fe2_cn = st.selectbox("Number", list(df_fe2["Code"]), key = "fe2_cn1", index = int(list(df_fe2["Code"]).index(uploaded_df["fe"][4]))) 
-        else:
-            fe2_cn = st.selectbox("Number", list(df_fe2["Code"]), key = "fe2_cn") 
-
-    # Find the credit hours for each elective 
-    fe1_credit = df_fe1[df_fe1["Code"] == fe1_cn]["Credit Hours:"] 
-    fe2_credit = df_fe2[df_fe2["Code"] == fe2_cn]["Credit Hours:"]
-    
-
-    # This is if nothing is chosen then the credits defaults to 0
-    if fe1_prefix == None or fe1_cn == None:
-        fe1_credit = 0
-    if fe2_prefix == None or fe2_cn == None:
-        fe2_credit = 0
-
-    fe_credits = fe_tc + int(fe1_credit) + int(fe2_credit)
-    st.write("###### :green[Total Focused Elective Credits:] " + str(f":green[{fe_credits}]"))
+    # Find number of upper division credits
+    #st.write(hum1_cn)
+    if le1_cn != None:
+        if int(''.join(filter(str.isdigit, le1_cn))) >= 300:
+            ud_credits += int(le1_credit)
+    if le2_cn != None:
+        if int(''.join(filter(str.isdigit, le2_cn)))>= 300:
+            ud_credits += int(le2_credit)
+    if le3_cn != None:
+        if int(''.join(filter(str.isdigit, le3_cn))) >= 300:
+            ud_credits += int(le3_credit)
+    if le4_cn != None:
+        if int(''.join(filter(str.isdigit, le4_cn))) >= 300:
+            ud_credits += int(le4_credit)
+    if le5_cn != None:
+        if int(''.join(filter(str.isdigit, le5_cn))) >= 300:
+            ud_credits += int(le5_credit)
+    if le6_cn != None:
+        if int(''.join(filter(str.isdigit, le6_cn))) >= 300:
+            ud_credits += int(le6_credit)
+    if le7_cn != None:
+        if int(''.join(filter(str.isdigit, le7_cn))) >= 300:
+            ud_credits += int(le7_credit)
+    if le8_cn != None:
+        if int(''.join(filter(str.isdigit, le8_cn))) >= 300:
+            ud_credits += int(le8_credit)
+    if le9_cn != None:
+        if int(''.join(filter(str.isdigit, le9_cn))) >= 300:
+            ud_credits += int(le9_credit)
+    if le10_cn != None:
+        if int(''.join(filter(str.isdigit, le10_cn))) >= 300:
+            ud_credits += int(le10_credit)
+    if le11_cn != None:
+        if int(''.join(filter(str.isdigit, le11_cn))) >= 300:
+            ud_credits += int(le11_credit)
+    if le12_cn != None:
+        if int(''.join(filter(str.isdigit, le12_cn))) >= 300:
+            ud_credits += int(le12_credit)
 
 # Default option
-def default_option():
+def statistics_option():
     # General Education Classes
     with st.expander("General Education Classes"):
         com_col, hum_col, ss_col, phy_col = st.columns(4)
@@ -803,42 +770,40 @@ def default_option():
     with st.expander("Core Mathematics Classes"):
         math_section()
     # General Education Classes
-    with st.expander("Elective Classes"):
-        lower_ele_col, upper_ele_col, foc_ele_seq_col, foc_ele_col = st.columns(4)
+    with st.expander("Option Specific Classes"):
+        option_req_col, sen_seq_col, foc_ele_seq_col, free_ele_col = st.columns(4)
 
-        # Lower div elec
-        with lower_ele_col:
-            lower_div_section()
+        # Option Req
+        with option_req_col:
+            option_req_section()
 
-        # Upper div elec
-        with upper_ele_col:
-            upper_div_section()
+        # Senior Seq
+        with sen_seq_col:
+            senior_seq_section()
         
-        # Focused elec sequ
+        # Option Elec
         with foc_ele_seq_col:
-            focused_elec_seq_section()
+            option_elec_section()
 
-        # Upper div elec
-        with foc_ele_col:
-            focused_ele_section()
+        # Free elec
+        with free_ele_col:
+            free_ele_section()
 
        
-
-
-if option_selected == "Default":
-    default_option()
-
+statistics_option()
 
 # Update credits on the sidebar
-st.sidebar.write("#### Total Communication Credits: " + str(com_credits) + " (" + str(18-com_credits) + " needed)")
-st.sidebar.write("#### Total Humanities Credits: " + str(hum_credits) + " (" + str(9-hum_credits) + " needed)")
-st.sidebar.write("#### Total Social Science Credits: " + str(ss_credits) + " (" + str(12-ss_credits) + " needed)")
-st.sidebar.write("#### Total Physics Credits: " + str(phy_credits) + " (" + str(19-phy_credits) + " needed)")
-st.sidebar.write("#### Total Math Credits: " + str(math_credits) + " (" + str(64-math_credits) + " needed)")
-st.sidebar.write("#### Total Lower Division Elective Credits: " + str(le_credits) + " (" + str(35-le_credits) + " needed)")
-st.sidebar.write("#### Total Upper Division Elective Credits: " + str(ue_credits) + " (" + str(7-ue_credits) + " needed)")
-st.sidebar.write("#### Total Focused Elective Sequence Credits: " + str(fes_credits) + " (" + str(9-fes_credits) + " needed)")
-st.sidebar.write("#### Total Focused Electives Credits: " + str(fe_credits) + " (" + str(7-fe_credits) + " needed)")
+with st.sidebar.expander("Total General Education Credits: " + str(com_credits + hum_credits + ss_credits + phy_credits) + " (" + str(47 - (com_credits + hum_credits + ss_credits + phy_credits)) + " needed)"):
+    st.write("#### Total Communication Credits: " + str(com_credits) + " (" + str(18-com_credits) + " needed)")
+    st.write("#### Total Humanities Credits: " + str(hum_credits) + " (" + str(9-hum_credits) + " needed)")
+    st.write("#### Total Social Science Credits: " + str(ss_credits) + " (" + str(12-ss_credits) + " needed)")
+    st.write("#### Total Physics Credits: " + str(phy_credits) + " (" + str(8-phy_credits) + " needed)")
+st.sidebar.write("#### Total Math Credits: " + str(math_credits) + " (" + str(56-math_credits) + " needed)")
+with st.sidebar.expander("#### Total Option Specific Credits: " + str(or_credits + senseq_credits + oe_credits + le_credits) + " (" + str(32-(or_credits + senseq_credits + oe_credits + le_credits)) + " needed)"):
+    st.write("#### Total Option Specific Classes (Required) Credits: " + str(or_credits) + " (" + str(12-or_credits) + " needed)")
+    st.write("#### Total Senior Sequence/Project Credits: " + str(senseq_credits) + " (" + str(8-senseq_credits) + " needed)")
+    st.write("#### Total Option Specific Classes (Elective) Credits: " + str(oe_credits) + " (" + str(12-oe_credits) + " needed)")
+st.sidebar.write("#### Total Free Electives Credits: " + str(le_credits) + " (" + str(45-le_credits) + " needed)")
 
 
 
@@ -847,9 +812,9 @@ with st.expander("Analysis and Download"):
     st.write("#### Analyze Credits")
     credits_data = pd.DataFrame(
                     {
-                        "Sections" : ["Comm", "Hum", "Soc Sci", "Phy", "Math", "Low Ele", "Upper Ele", "Foc Ele Seq", "Foc Ele"],
-                        "Credits Acquired" : [com_credits, hum_credits, ss_credits, phy_credits, math_credits, le_credits, ue_credits, fes_credits, fe_credits],
-                        "Credits Needed" : [18-com_credits, 9-hum_credits, 12-ss_credits, 19-phy_credits, 64-math_credits, 35-le_credits, 7-ue_credits, 9-fes_credits, 7-fe_credits]
+                        "Sections" : ["Comm", "Hum", "Soc Sci", "Phy", "Math", "Option Req.", "Senior Seq.", "Option Elec.", "Free Elec."],
+                        "Credits Acquired" : [com_credits, hum_credits, ss_credits, phy_credits, math_credits, or_credits, senseq_credits, oe_credits, le_credits],
+                        "Credits Needed" : [18-com_credits, 9-hum_credits, 12-ss_credits, 19-phy_credits, 64-math_credits, 15-or_credits, 8-senseq_credits, 12-oe_credits, 42-le_credits]
                     
                     }
                     )  
@@ -860,23 +825,24 @@ with st.expander("Analysis and Download"):
         color=["#35bd59", "#bd4c35"],  # Optional
     )    
 
-    total_credits_acquired = com_credits + hum_credits + ss_credits + phy_credits + math_credits + le_credits + ue_credits + fes_credits + fe_credits
+    total_credits_acquired = com_credits + hum_credits + ss_credits + phy_credits + math_credits + or_credits + senseq_credits + oe_credits + le_credits
     total_credits_needed = 180 - total_credits_acquired
     st.write("#### Total Credits Acquired - " + str(total_credits_acquired))
     st.write("#### Total Credits Needed - " + str(total_credits_needed))
+    st.write("#### Total Upper Division (300+) Credits (from OIT) - " + str(ud_credits) + "/" + str(60))
     st.sidebar.write("## :green[CREDITS] - " + str(total_credits_acquired) + "/" + str(180))
 
     # Creating a data frame to download
-    created_data = {"comm" : [com_tc, com111z, spe321, wri121z, com_choice1, com_choice2, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+    created_data = {"comm" : [com_tc, com111z, spe321, wri121z, com1_prefix, com1_cn, com_choice1, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "hum" : [hum_tc, hum1_prefix, hum1_cn, hum2_prefix, hum2_cn, hum3_prefix, hum3_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "ss" : [ss_tc, ss1_prefix, ss1_cn, ss2_prefix, ss2_cn, ss3_prefix, ss3_cn, ss4_prefix, ss4_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
-                    "phy" : [phy_tc, phy221, phy222, phy223, phy1_prefix, phy1_cn, phy2_prefix, phy2_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
-                    "math" : [math_tc, stat201, math251, math252, math253, math254, math310, math321, math322, math341, math346, math354, math421, math451, math465, math_choice1, math_choice2, None, None, None, None, None, None, None, None],
+                    "phy" : [phy_tc, phy221, phy222, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                    "math" : [math_tc, stat201, math251, math252, math253, math254, math310, math321, math322, math341, math346, math354, math421, math451, math465, None, None, None, None, None, None, None, None, None, None],
+                    "or" : [or_tc, math342, math361, math362, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                    "senseq" : [senseq_tc, senseq_choice1, senseq_choice2, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                    "oe" : [oe_tc, stat211, stat405, math407, stat412, stat414, stat441, stat442, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
                     "le" : [le_tc, le1_prefix, le1_cn, le2_prefix, le2_cn, le3_prefix, le3_cn, le4_prefix, le4_cn, le5_prefix, le5_cn, le6_prefix, le6_cn, le7_prefix, le7_cn, \
-                            le8_prefix, le8_cn, le9_prefix, le9_cn, le10_prefix, le10_cn, le11_prefix, le11_cn, le12_prefix, le12_cn],
-                    "ue" : [ue_tc, ue1_prefix, ue1_cn, ue2_prefix, ue2_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
-                    "fes" : [fes_tc, fes1_prefix, fes1_cn, fes2_prefix, fes2_cn, fes3_prefix, fes3_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
-                    "fe" : [fe_tc, fe1_prefix, fe1_cn, fe2_prefix, fe2_cn, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
+                            le8_prefix, le8_cn, le9_prefix, le9_cn, le10_prefix, le10_cn, le11_prefix, le11_cn, None, None],
                     "details" : [option_selected, student_name, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]}
 
 
