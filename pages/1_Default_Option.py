@@ -990,11 +990,11 @@ with st.expander("Analysis and Download"):
     )    
 
     total_credits_acquired = com_credits + hum_credits + ss_credits + phy_credits + math_credits + le_credits + ue_credits + fes_credits + fe_credits
-    total_credits_needed = 180 - total_credits_acquired
+    total_credits_needed = 181 - total_credits_acquired
     st.write("#### Total Credits Acquired - " + str(total_credits_acquired))
     st.write("#### Total Credits Needed - " + str(total_credits_needed))
     st.write("#### Total Upper Division (300+) Credits (from OIT) - " + str(ud_credits) + "/" + str(60))
-    st.sidebar.write("## :green[CREDITS] - " + str(total_credits_acquired) + "/" + str(180))
+    st.sidebar.write("## :green[CREDITS] - " + str(total_credits_acquired) + "/" + str(181))
 
     # Creating a data frame to download
     created_data = {"comm" : [com_tc, com111z, spe321, wri121z, com_choice1, com_choice2, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
