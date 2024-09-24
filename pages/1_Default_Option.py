@@ -447,7 +447,7 @@ def lower_div_section():
     global le_tc, le_credits, le1_prefix, le1_cn, le2_prefix, le2_cn, le3_prefix, le3_cn, le4_prefix, le4_cn, le5_prefix, le5_cn, le6_prefix, le6_cn, le7_prefix, le7_cn, le8_prefix, le8_cn, le9_prefix, le9_cn, le10_prefix, le10_cn, \
             le11_prefix, le11_cn, le12_prefix, le12_cn, ud_credits
      # Lower div elective
-    st.write("### Lower Division Electives (35 Credits)")
+    st.write("### Lower Division Electives (36 Credits)")
     if uploaded_file == None:
         le_tc = st.selectbox("Lower Division Electives Transfer Credits", list(range(0, 76)))
     else:
@@ -963,8 +963,8 @@ with st.sidebar.expander("Total General Education Credits: " + str(com_credits +
     st.write("#### Total Social Science Credits: " + str(ss_credits) + " (" + str(12-ss_credits) + " needed)")
     st.write("#### Total Physics Credits: " + str(phy_credits) + " (" + str(19-phy_credits) + " needed)")
 st.sidebar.write("Total Math Credits: " + str(math_credits) + " (" + str(64-math_credits) + " needed)")
-with st.sidebar.expander("#### Total Elective Credits: " + str(le_credits + ue_credits + fes_credits + fe_credits) + " (" + str(58-(le_credits + ue_credits + fes_credits + fe_credits)) + " needed)"):
-    st.write("#### Total Lower Division Elective Credits: " + str(le_credits) + " (" + str(35-le_credits) + " needed)")
+with st.sidebar.expander("#### Total Elective Credits: " + str(le_credits + ue_credits + fes_credits + fe_credits) + " (" + str(59-(le_credits + ue_credits + fes_credits + fe_credits)) + " needed)"):
+    st.write("#### Total Lower Division Elective Credits: " + str(le_credits) + " (" + str(36-le_credits) + " needed)")
     st.write("#### Total Upper Division (300+) Elective Credits: " + str(ue_credits) + " (" + str(7-ue_credits) + " needed)")
     st.write("#### Total Focused Elective Sequence Credits: " + str(fes_credits) + " (" + str(9-fes_credits) + " needed)")
     st.write("#### Total Focused Electives Credits: " + str(fe_credits) + " (" + str(7-fe_credits) + " needed)")
