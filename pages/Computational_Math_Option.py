@@ -410,7 +410,7 @@ def option_req_section():
     st.write("Specific Required Classes")
     # Req classes
     cst116 = st.checkbox("CST 116 - C++ Programming I", value = cst116_value)
-    cst126 = st.checkbox("CST 116 - C++ Programming II", value = cst126_value)
+    cst126 = st.checkbox("CST 126 - C++ Programming II", value = cst126_value)
     cst136 = st.checkbox("CST 136 - OOP with C++", value = cst136_value)
     math342 = st.checkbox("MATH 342 - Linear Algebra II", value = math342_value)
     phy223 = st.checkbox("PHY 223 - General Physics with Calculus III", value = phy223_value)
